@@ -11,3 +11,8 @@ nodemon app.js <br />
 # Ejs Template Engine 
 
 <%= %> <br />
+
+# Header setup for Cross server, JWT Token
+## 
+
+
