@@ -66,5 +66,14 @@ app.use('/', (req, res, next)=>{
 console.log('-: App Running :-');
 mongoConnect(()=>app.listen(3000));
 
-mongoose.connect(MONGODB_URI).then(result => app.listen(3001)).catch(err=>console.log(err));
+mongoose.connect(MONGODB_URI)
+        .then(result =>{ 
+            console.log('-: Listening port 3001 :-')
+            const server    = app.listen(3001);
+            const socketio  = require('socket.io')(server);
+            socketio.on('connection', socket => {
+                console.log('-: Client Connected :-');
+            });
+        })
+        .catch(err=>console.log(err));
 
