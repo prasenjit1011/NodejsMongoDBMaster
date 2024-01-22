@@ -58,7 +58,7 @@ data 			= jwt.verify(token, 'mysecret'); <br />
 
 ## Miscellaneous
 
-Cron Job <br />
+Cron Job, Scheduler Job <br />
 
 
 
