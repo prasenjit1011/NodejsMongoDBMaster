@@ -2,6 +2,7 @@ console.log('\n\n-: App Started :-');
 
 const express       = require('express');
 const bodyParser    = require('body-parser');
+const cron          = require('node-cron');
 const mongoose      = require('mongoose');
 const session       = require('express-session');
 const mongodbStore  = require('connect-mongodb-session')(session);
@@ -62,6 +63,7 @@ app.use('/', (req, res, next)=>{
     res.render('home', {sessionData:req.session});
 });
 
+/***** Miscellaneous : Start ************************************************ */
 
 const mypromise = require('./mypromise');
 console.log('-: Promise Data : ',
@@ -75,6 +77,13 @@ console.log('-: Promise Data : ',
     ' -: Waiting for promise data :- '
 );
 
+cron.schedule('* * * * *', () => {
+    console.log('running a task every second.');
+});
+
+
+
+/***** Miscellaneous : End ************************************************ */
 
 
 
