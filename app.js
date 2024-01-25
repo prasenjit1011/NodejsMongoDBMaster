@@ -49,7 +49,7 @@ app.use((req, res, next) => {
 
 
 const auth = require('./routes/auth');
-app.use(auth);
+app.use(csrfProtect, auth);
 
 const jwt = require('./routes/jwt');
 app.use(jwt);

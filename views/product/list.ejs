@@ -1,32 +1,31 @@
 <%- include('../includes/header.ejs') %>
-    <div>
-        
-        <h3>-: Product listing using mongoose:-335</h3>
+<h3>-: Product listing using mongoose:-</h3>
 
-        <div class="box">
-            <form action="/product/add/?_csrf=<%=csrfToken%>" method="post" enctype="multipart/form-data" >
-                <input type="text" name="productName" placeholder="Product Name" />
-                <input type="text" name="productPrice" placeholder="Product Price" /> &nbsp; 
-                <input type="text" name="productDetail" placeholder="Product Details" /> &nbsp; 
-                <input type="file" name="ProductImage"   />
-                <button>Save</button>
-            </form>
+<div class="box">
+    <form action="/product/add/?_csrf=<%=csrfToken%>" method="post" enctype="multipart/form-data" >
+        <input type="text" name="productName" placeholder="Product Name" />
+        <input type="text" name="productPrice" placeholder="Product Price" /> &nbsp; 
+        <input type="text" name="productDetail" placeholder="Product Details" /> &nbsp; 
+        <input type="file" name="ProductImage"   />
+        <button>Save</button>
+    </form>
+</div>
+
+<% for (let product of productlist) { %>
+    <div class="box">
+        <div style="width: 50%; float: left;">
+            <%= product.name %>
+            <br /> <br />
+            Price : <%= product.price %> &nbsp; <br /><br />
         </div>
-        <% for (let product of productlist) { %>
-            <div class="box">
-                <div style="width: 50%; float: left;">
-                    <%= product.name %>
-                    <br /> <br />
-                    Price : <%= product.price %> &nbsp; <br /><br />
-                </div>
-                <div style="width: 50%; float: left;">
-                    <img src="/<%=product.imageUrl%>" width="100px" />
-                </div>
-                <div style="width: 100%; float: left;">
-                    <a href="/product/details/<%=product._id%>" style="color: #111; cursor: pointer; ">View More</a> &nbsp; &nbsp; 
-                    <a href="/product/delete/<%=product._id%>" style="color: #111; cursor: pointer; ">Delete</a>  
-                </div>
-            </div>
-        <% } %>
+        <div style="width: 50%; float: left;">
+            <img src="/<%=product.imageUrl%>" width="100px" />
+        </div>
+        <div style="width: 100%; float: left;">
+            <a href="/product/details/<%=product._id%>" style="color: #111; cursor: pointer; ">View More</a> &nbsp; &nbsp; 
+            <a href="/product/delete/<%=product._id%>" style="color: #111; cursor: pointer; ">Delete</a>  
+        </div>
     </div>
+<% } %>
+
 <%- include('../includes/footer.ejs') %>
