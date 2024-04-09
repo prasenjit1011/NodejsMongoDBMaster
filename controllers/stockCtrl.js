@@ -101,6 +101,7 @@ const updBalancesheet = async (todayChange, cmp) => {
 
 
 exports.getTradeData = async (req, res, next) => {
+    try{
     let cacheSidData    = myCache.get("cacheSidData");
     let cacheApiData    = myCache.get("cacheApiData");  
     let buyArr          = {};
@@ -170,9 +171,15 @@ exports.getTradeData = async (req, res, next) => {
             sellArr[val._id.sid] = val.cnt;
         }
 
-        stockDetails[val._id.sid]   = cacheApiData.find(item => item.sid === val._id.sid);
-        ltpArr[val._id.sid]         = cacheApiData.find(item => item.sid === val._id.sid)?.price;
-        stockArr[val._id.sid]       = cacheSidData[val._id.sid]['stock'];
+        //{ _id: { type: 'Buy' }, cnt: 4 }
+        if(cacheSidData[val._id.sid] == undefined || cacheSidData[val._id.sid]['stock'] == undefined){
+            console.log('--->>',val);
+        }
+        else{
+            stockDetails[val._id.sid]   = cacheApiData.find(item => item.sid === val._id.sid);
+            ltpArr[val._id.sid]         = cacheApiData.find(item => item.sid === val._id.sid)?.price;
+            stockArr[val._id.sid]       = cacheSidData[val._id.sid]['stock'];
+        }
     });
 
 
@@ -216,6 +223,11 @@ exports.getTradeData = async (req, res, next) => {
     updBalancesheet(todayChange, cmp);    
     currentArr.sort( (a,b) => a.stock - b.stock );
     return res.end(JSON.stringify({ cmp:cmp, currentArr:currentArr, todayChange:todayChange}));
+    }
+    catch(error) {
+        console.error(error);
+        return res.end(JSON.stringify([45,67]));
+    }
 }
 
 function weeklydata(apiData){
@@ -391,7 +403,7 @@ exports.tradeBook = async (req, res, next) => {
                 console.log(error.message);
             });;
     
-    let resData = {"status":201, msg:"LTP cache data not found!....", tda:result};
+    let resData = {"status":201, msg:"Trade data updated successfully!", tda:result};
     console.log('-: Completed :-');
     return res.end(JSON.stringify(resData));
 }
