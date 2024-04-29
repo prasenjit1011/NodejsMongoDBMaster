@@ -11,3 +11,11 @@ nodemon app.js <br />
 # Ejs Template Engine 
 
 <%= %> <br />
+
+# TypeScript 
+
+npm i -g typescript
+
+tsc --init
+
+npm i --save-dev @types/node @types/express @types/body-parser
