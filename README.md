@@ -63,6 +63,22 @@ data 			= jwt.verify(token, 'mysecret'); <br />
 
 
 
+### GraphQL
 
+API Url : http://localhost:3000/graphql
+
+{
+  "query":"{hello{text views}}"
+}
+
+mutation{
+  createUser(userInput:{email:"test01@gmail.com", name:"maxiu Am", password:"test"}){
+    _id
+    name
+    email
+    password
+  }
+}
+  
 
 
