@@ -332,18 +332,35 @@ exports.getShareDetails = async (req, res, next) => {
     interval        = '7';
     apiUrl          = apiList['groww']+code+'/'+duration+'?intervalInDays='+interval+'&minimal=true';;
     let oneYearData = await fetch(apiUrl).then(result=>result.json())
-                            .then(apiData => { return apiData['candles']; })
+                            .then(apiData => { 
+                                if(!apiData['candles']){
+                                    return [];
+                                }
+                                return apiData['candles']; 
+                            })
                             .catch(err=>{ return []; });
 
     duration        = 'all';
     interval        = '365';
     apiUrl          = apiList['groww']+code+'/'+duration+'?intervalInDays='+interval+'&minimal=true';;
     let historyData = await fetch(apiUrl).then(result=>result.json())
-                            .then(apiData => { return apiData['candles']; })
+                            .then(apiData => { 
+                                if(!apiData['candles']){
+                                    return [];
+                                }
+                                return apiData['candles']; 
+                            })
                             .catch(err=>{ return []; });
 
 
-    let data = { shareDetails:shareDetails[0], transactionDetails:transactionDetails, weeklyData:weeklyData, oneYearData:oneYearData, historyData:historyData };
+    let data = { 
+        rand: parseInt(100*Math.random()), 
+        shareDetails:shareDetails[0], 
+        transactionDetails:transactionDetails, 
+        weeklyData:weeklyData, 
+        oneYearData:oneYearData, 
+        historyData:historyData 
+    };
     return res.end(JSON.stringify(data));
 
 }
