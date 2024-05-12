@@ -278,9 +278,20 @@ exports.getShareDetails = async (req, res, next) => {
                                                 })
                                                 .catch(err=>console.log(err));
 
+    
+    apiUrl          = apiList['tickertape']+sid;
+    let ltpPrice    = await fetch(apiUrl)
+                        .then((res)=>res.json())
+                        .then(async (res)=>{
+                            return res['data'][0]['price'];
+                        });
+    
+    if(shareDetails[0].ltp != ltpPrice){
+        shareDetails[0].ltp = ltpPrice;
+        await Stock.findOneAndUpdate({sid:sid}, {ltp:ltpPrice});
+    }
 
     let code        = shareDetails[0].sid_grow;  
-    
     let arr1        = [];
     let arr2        = [];
     //let weeklyData  = [];

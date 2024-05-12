@@ -14,9 +14,17 @@ const stockSchema = new Schema({
     type: String,
     required: true
   },
+  ltp: {
+    type: Number,
+    required: false
+  },
+  cost: {
+    type: Number,
+    required: false
+  },
   qty: {
     type: Number,
-    required: true
+    required: false
   },
   sold_qty: {
     type: Number,
