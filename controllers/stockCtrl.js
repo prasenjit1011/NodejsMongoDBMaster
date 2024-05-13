@@ -436,4 +436,14 @@ exports.tradeBook = async (req, res, next) => {
     return res.end(JSON.stringify(resData));
 }
 
+exports.updStockParam = async (req, res, next) =>{
 
+    console.log('Id :',req.body);
+    // console.log('Id :',req.body.sid);
+    // console.log('Name :',req.body.paramName);
+    // console.log('Val :',req.body.paramValue);
+
+    let resData = {"status":201, msg:"Trade data updated successfully!"};
+    console.log('-: Completed :-');
+    return res.end(JSON.stringify(resData));
+}
