@@ -80,6 +80,7 @@ exports.getNetworth = async (req, res, next) => {
     return res.end(JSON.stringify(balanceData));
 }
 
+
 const updBalancesheet = async (todayChange, cmp) => {
 
     if(todayChange != 0){
@@ -230,6 +231,7 @@ exports.getTradeData = async (req, res, next) => {
     }
 }
 
+
 function weeklydata(apiData){
     let arr2 = [4445];
 
@@ -259,18 +261,30 @@ function weeklydata(apiData){
     return arr2;
 }
 
+
 exports.getShareDetails = async (req, res, next) => {
     ///let data            = undefined;
     let duration        = undefined;
     let interval        = undefined;
     let apiUrl          = undefined;
     let sid             = req.params.sid;
-    let shareDetails    = await Stock.find({sid:sid}).limit(300)
+    let shareDetails    = await Stock.findOne({sid:sid}).limit(300)
                                     .then(data=>{
                                         return data;
                                     })
                                     .catch(err=>console.log(err));
 
+    if(!shareDetails){
+        let data1 = { 
+            rand: parseInt(100*Math.random()), 
+            shareDetails:[], 
+            transactionDetails:[], 
+            weeklyData:[], 
+            oneYearData:[], 
+            historyData:[] 
+        };
+        return res.end(JSON.stringify(data1));
+    }
 
     let transactionDetails  = await Tradebook.find({sid:sid}).sort({created_at: "ascending"}).limit(300)
                                                 .then(data=>{
@@ -286,12 +300,12 @@ exports.getShareDetails = async (req, res, next) => {
                             return res['data'][0]['price'];
                         });
     
-    if(shareDetails[0].ltp != ltpPrice){
-        shareDetails[0].ltp = ltpPrice;
+    if(shareDetails.ltp != ltpPrice){
+        shareDetails.ltp = ltpPrice;
         await Stock.findOneAndUpdate({sid:sid}, {ltp:ltpPrice});
     }
 
-    let code        = shareDetails[0].sid_grow;  
+    let code        = shareDetails.sid_grow;  
     let arr1        = [];
     let arr2        = [];
     //let weeklyData  = [];
@@ -355,7 +369,7 @@ exports.getShareDetails = async (req, res, next) => {
 
     let data = { 
         rand: parseInt(100*Math.random()), 
-        shareDetails:shareDetails[0], 
+        shareDetails:shareDetails, 
         transactionDetails:transactionDetails, 
         weeklyData:weeklyData, 
         oneYearData:oneYearData, 
@@ -375,7 +389,6 @@ exports.updateStockData = async (req, res, next) => {
         return res.end(JSON.stringify(resData));
     }   
 }
-
 
 
 exports.tradeBook = async (req, res, next) => {
@@ -436,14 +449,34 @@ exports.tradeBook = async (req, res, next) => {
     return res.end(JSON.stringify(resData));
 }
 
+
 exports.updStockParam = async (req, res, next) =>{
 
-    console.log('Id :',req.body);
-    // console.log('Id :',req.body.sid);
-    // console.log('Name :',req.body.paramName);
-    // console.log('Val :',req.body.paramValue);
+    let paramName   = req.body.paramName;
+    let paramValue  = req.body.paramValue;
+    var updArr      = {};
 
-    let resData = {"status":201, msg:"Trade data updated successfully!"};
+    updArr[paramName]   = paramValue;
+    const doc = await Stock.updateOne(
+                        { 'sid': req.body.sid }, 
+                        updArr
+                    );
+    
+    const stockData = await Stock.findOne({sid: req.body.sid}).limit(300)
+    .then(data=>{
+        return data;
+    })
+    .catch(err=>console.log(err));
+
+    if(!stockData){
+        if(paramName == 'sidCode' && paramValue != 'NEW'){
+            const docV = await Stock.create({'sid':paramValue});
+            console.log(docV);
+        }
+    }
+
+
+    let resData = {"status":201, msg:"Trade data updated successfully!", stockData:stockData};
     console.log('-: Completed :-');
     return res.end(JSON.stringify(resData));
 }

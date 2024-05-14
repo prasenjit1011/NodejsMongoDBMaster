@@ -8,11 +8,11 @@ const stockSchema = new Schema({
   },
   stock:{
     type: String,
-    required: true
+    required: false
   },
   share_name: {
     type: String,
-    required: true
+    required: false
   },
   ltp: {
     type: Number,
@@ -28,11 +28,15 @@ const stockSchema = new Schema({
   },
   sold_qty: {
     type: Number,
-    required: true
+    required: false
   },
   sid_grow:{
     type: String,
-    required: true
+    required: false
+  },
+  nseCode:{
+    type: String,
+    required: false
   },
   stock:{
     type: String,
