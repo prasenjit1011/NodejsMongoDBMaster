@@ -5,8 +5,8 @@ exports.getHotelList = (req, res, next)=>{
 
     return HotelModel
                 .find()
-                .then(data=>{
-                    console.log(data);
+                .then(data=>{                    
+
                     return res.end(JSON.stringify(data));
                 })
                 .catch();
@@ -19,7 +19,7 @@ exports.getHotelDetails = (req, res, next)=>{
     return HotelModel
                 .findById(req.params.id)
                 .then(data=>{
-                    console.log(data);
+
                     return res.end(JSON.stringify(data));
                 })
                 .catch();
@@ -43,7 +43,7 @@ exports.bookNow = (req, res, next)=>{
     return hotelBooking
             .save()
             .then(data=>{
-                console.log(data);
+
                 let result = {status:true, msg:'Booking successfull on date '+req.body.dtd};
                 return res.end(JSON.stringify(result));
             })
@@ -56,6 +56,7 @@ exports.bookingList = (req, res, next)=>{
     return Booking
                 .find()
                 .then(data=>{
+                    
                     return res.end(JSON.stringify(data));
                 })
                 .catch();
