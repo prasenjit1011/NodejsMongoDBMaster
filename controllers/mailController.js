@@ -2,13 +2,15 @@ const sgMail    = require('@sendgrid/mail')
 
 exports.sendMail = (req, res, next) => {
 
-  const apikey  = process.env.SENDGRID_API_KEY;
-  let userName  = req.body?.userName;
-  let emailId   = req.body?.emailId;
-  let userMsg   = req.body?.userMsg;
-  let msgStr    = '';
+  const apikey      = process.env.SENDGRID_API_KEY;
+  let userName      = req.body?.userName;
+  let mobileNumber  = req.body?.mobileNumber;
+  let emailId       = req.body?.emailId;
+  let userMsg       = req.body?.userMsg;
+  let msgStr        = '';
 
   msgStr += '<p>Name : '+userName+'</p>';
+  msgStr += '<p>Mobile : '+mobileNumber+'</p>';
   msgStr += '<p>Email Id : '+emailId+'</p>';
   msgStr += '<p>Msg : '+userMsg+'</p>';
 
