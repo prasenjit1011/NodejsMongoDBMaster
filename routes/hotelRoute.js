@@ -1,7 +1,20 @@
 const express   = require('express');
 const router    = express.Router();
-const multer = require('multer')
-const upload = multer({ dest: 'images/' })
+
+const multer        = require('multer');
+const fileStorage   = multer.diskStorage({
+                                destination: 'images',
+                                filename: (req, file, cb) => { cb(null, parseInt(100*Math.random())+'-'+file.originalname); }
+                            });
+const fileFilter = (req, file, cb) => {
+                                        if ( file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg' ) { cb(null, true); } 
+                                        else { cb(null, false); }
+                                    };
+const upload = multer({ storage: fileStorage, fileFilter: fileFilter });
+
+
+
+
 
 const hotelCtrl = require('../controllers/hotelController');
 

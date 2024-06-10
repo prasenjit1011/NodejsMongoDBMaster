@@ -6,6 +6,7 @@ const contactusSchema = new Schema({
     lastName: { type: String, required: true },
     mobileNumber: {type: String, require: true },
     userEmail: { type: String, required: false },
+    imgSrc: { type: String, required: false },
     msg: { type: String, required: true}
 });
 

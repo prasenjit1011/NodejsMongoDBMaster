@@ -99,30 +99,30 @@ exports.bookingList = (req, res, next)=>{
 }
 
 exports.contactUs = (req, res, next) => {   
-    
-    const imageName = req.file.filename;
-    const description = req.body.description;
+
+    const imgSrc = req.file.filename;
+    const firstName = req.body.firstName;
   
+
     // Save this data to a database probably
   
-    console.log(description, imageName)
-    res.send({description, imageName})
     
-    // let data = {
-    //             firstName: req.body.firstName, 
-    //             lastName: req.body.lastName, 
-    //             mobileNumber: req.body.mobileNumber, 
-    //             userEmail: req.body.userEmail, 
-    //             msg: req.body.msg, 
-    //         };
     let data = {
-        file:req.body.file
-    };
+                firstName: req.body.firstName, 
+                lastName: req.body.lastName, 
+                mobileNumber: req.body.mobileNumber, 
+                userEmail: req.body.userEmail, 
+                imgSrc:imgSrc,
+                msg: req.body.msg, 
+            };
+    // let data = {
+    //     file:req.body.file
+    // };
 
-    console.log(data);
-    let result = {status:true, msg:'Your msg successfully sent us'};
-    console.log('-------'+parseInt(1000*Math.random())+'-----------');
-    return res.end(JSON.stringify(result));
+    // console.log(data);
+    // let result = {status:true, msg:'Your msg successfully sent us', data};
+    // console.log('-------'+parseInt(1000*Math.random())+'-----------');
+    // return res.end(JSON.stringify(result));
 
     let contactus = new Contactus(data);
     return contactus
