@@ -3,7 +3,7 @@ console.log('\n\n-: App Started :-');
 const express       = require('express');
 const bodyParser    = require('body-parser');
 const mongoose      = require('mongoose');
-const MONGODB_URI   = "mongodb+srv://tester:tester1234@cluster0.hlicuim.mongodb.net/demat?retryWrites=true&w=majority";
+const MONGODB_URI   = "mongodb+srv://tester:tester1234@cluster0.hlicuim.mongodb.net/demat?retryWrites=true&w=majority&replicaSet=rs0";
 
 
 const app   = express();
