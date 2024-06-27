@@ -3,7 +3,7 @@ console.log('\n\n-: App Started :-');
 const express       = require('express');
 const bodyParser    = require('body-parser');
 const mongoose      = require('mongoose');
-const MONGODB_URI   = "mongodb+srv://tester:tester1234@cluster0.hlicuim.mongodb.net/demat?retryWrites=true&w=majority&replicaSet=rs0";
+const MONGODB_URI   = "mongodb+srv://tester:tester1234@cluster0.hlicuim.mongodb.net/demat?retryWrites=true&w=majority";//&replicaSet=rs0";
 
 
 const app   = express();
@@ -48,4 +48,6 @@ console.log('-: App Running :-');
 
 
 /////app.listen(3000);///
-mongoose.connect(MONGODB_URI).then(result =>{ console.log("\007"); app.listen(3000)}).catch(err=>console.log(err));
+mongoose.connect(MONGODB_URI)
+        .then(result =>{ console.log("-: MongoDB connected :-"); app.listen(3000)})
+        .catch(err=>{console.log('MongoDB not connected'); console.log(err)});

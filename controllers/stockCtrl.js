@@ -42,9 +42,19 @@ exports.getStockList = async (req, res, next) => {
                             .then(data=>{
                                 return data;
                             })
-                            .catch(err=>console.log(err));
+                            .catch(err=>{
+                                console.log('-: Data not fetch successfully from database :- ');
+                                console.log(err)
+                                throw new Error('Data not fetch successfully from database');
+                            });
                             //.find({}, fields).limit(3000)
     
+    console.log('Type of  ='+ typeof(sidsData));
+    if(typeof(sidsData) !== 'object'){
+        let resData = {"status":201, msg:"LTP not fetch from API!", sidData: [], apiData: []};
+        return res.end(JSON.stringify(resData));
+    }
+
     let sids    = sidsData.map(data=>data.sid).toString();
     let sidData = {};
     sidsData.forEach(data=>{
