@@ -21,13 +21,15 @@ exports.getStockList = async (req, res, next) => {
     let cacheSidData        = myCache.get("cacheSidData");
     let cacheApiData        = myCache.get("cacheApiData");
     
+    console.log('--- stock/list ----');
 
     if(cacheSidData !== undefined &&  cacheApiData !== undefined){
-        let resData = {"status":201, msg:"LTP fetch from cache successfully!", sidData: cacheSidData, apiData: cacheApiData};
+        console.log('-- Cache Data --');
+        let resData = {"status":201, msg:"LTP fetch from cache successfully!1234", sidData: cacheSidData, apiData: cacheApiData};
         return res.end(JSON.stringify(resData));
     }
    
-    let fields      = { "_id": 0, "sid": 1, "share_name": 1, "qty": 1, "sold_qty": 1, "stock": 1 };
+    let fields      = { "_id": 0, "sid": 1, "share_name": 1, "qty": 1, "sold_qty": 1, "stock": 1, "sharecode": 1 };
     let sidsData    = await Stock.aggregate([
                                 { $sort:{ sid : 1 }},
                                 { 
@@ -39,6 +41,7 @@ exports.getStockList = async (req, res, next) => {
                                 //{ $match: { sid:{ $in:['HAP', 'HUDC', 'DABU', 'ASOK', 'DOLA', 'BION', 'ADAN']}} },
                                 { $project: fields }
                             ])
+                            .limit(1000)
                             .then(data=>{
                                 return data;
                             })
@@ -58,24 +61,33 @@ exports.getStockList = async (req, res, next) => {
     let sids    = sidsData.map(data=>data.sid).toString();
     let sidData = {};
     sidsData.forEach(data=>{
-        sidData[data.sid] = {"sid": data.sid, "stock": data.stock, "share_name": data.share_name, "qty": data.qty, "sold_qty": data.sold_qty, "cqty": (data.qty-data.sold_qty)};
+        sidData[data.sid] = {"sid": data.sid, "sharecode": data.sharecode, "stock": data.stock, "share_name": data.share_name, "qty": data.qty, "sold_qty": data.sold_qty, "cqty": (data.qty-data.sold_qty)};
     });
     
 
     let apiUrl = apiList['tickertape']+sids;
-    fetch(apiUrl)
+    let priceData = await fetch(apiUrl)
             .then(result=>result.json())
-            .then(apiData => {
-                myCache.set( "cacheSidData", sidData, 300 );
-                myCache.set( "cacheApiData", apiData['data'], 300 );
-                let resData = {"status":200, msg:"LTP fetch successfully!", sidData:sidData, apiData:apiData['data']};
-                return res.end(JSON.stringify(resData));
+            .then(priceData => {
+
+                return priceData['data'];
             })
             .catch(err=>{
                 console.log(err);
                 let resData = {"status":500, msg:"Internal Server Error!", sidData:[], apiData:[]};
                 return res.end(resData);
-            });   
+            }); 
+    
+    let apiData = [];
+    priceData.forEach(data=>{
+        apiData.push({...sidData[data.sid], ...data});
+    });
+
+    myCache.set( "cacheSidData", sidData, 300 );
+    myCache.set( "cacheApiData", apiData, 300 );
+    
+    let resData = {"status":200, msg:"LTP fetch successfully!", sidData:sidData, apiData:apiData};
+    return res.end(JSON.stringify(resData));
 }
 
 
