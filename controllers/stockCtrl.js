@@ -327,7 +327,7 @@ exports.getShareDetails = async (req, res, next) => {
         await Stock.findOneAndUpdate({sid:sid}, {ltp:ltpPrice});
     }
 
-    let code        = shareDetails.sid_grow;  
+    let code        = shareDetails.growCode;  
     let arr1        = [];
     let arr2        = [];
     //let weeklyData  = [];
@@ -335,9 +335,9 @@ exports.getShareDetails = async (req, res, next) => {
     let d1          = null;
     let d2          = null;
     duration        = 'weekly';
-    interval        = '1';
-    apiUrl          = apiList['groww']+code+'/'+duration+'?intervalInDays='+interval+'&minimal=true';;
-    let weeklyData  = await fetch(apiUrl).then(result=>result.json())
+    interval            = '1';
+    let weeklyApiUrl    = apiList['groww']+code+'/'+duration+'?intervalInDays='+interval+'&minimal=true';;    
+    let weeklyData      = await fetch(weeklyApiUrl).then(result=>result.json())
                             .then((apiData) => { 
                                 let result = new Promise((resolve, reject) => {
                                                 apiData['candles'].forEach((val, key)=>{
@@ -366,8 +366,8 @@ exports.getShareDetails = async (req, res, next) => {
 
     duration        = '1y';
     interval        = '7';
-    apiUrl          = apiList['groww']+code+'/'+duration+'?intervalInDays='+interval+'&minimal=true';;
-    let oneYearData = await fetch(apiUrl).then(result=>result.json())
+    let yearlyApiUrl    = apiList['groww']+code+'/'+duration+'?intervalInDays='+interval+'&minimal=true';;
+    let oneYearData     = await fetch(yearlyApiUrl).then(result=>result.json())
                             .then(apiData => { 
                                 if(!apiData['candles']){
                                     return [];
@@ -378,8 +378,8 @@ exports.getShareDetails = async (req, res, next) => {
 
     duration        = 'all';
     interval        = '365';
-    apiUrl          = apiList['groww']+code+'/'+duration+'?intervalInDays='+interval+'&minimal=true';;
-    let historyData = await fetch(apiUrl).then(result=>result.json())
+    historyApiUrl   = apiList['groww']+code+'/'+duration+'?intervalInDays='+interval+'&minimal=true';;
+    let historyData = await fetch(historyApiUrl).then(result=>result.json())
                             .then(apiData => { 
                                 if(!apiData['candles']){
                                     return [];
@@ -395,7 +395,12 @@ exports.getShareDetails = async (req, res, next) => {
         transactionDetails:transactionDetails, 
         weeklyData:weeklyData, 
         oneYearData:oneYearData, 
-        historyData:historyData 
+        historyData:historyData,
+        apiUrl:{
+            'weekly':weeklyApiUrl,
+            'yearly':yearlyApiUrl,
+            'history':historyApiUrl
+        }
     };
     return res.end(JSON.stringify(data));
 
@@ -471,6 +476,26 @@ exports.tradeBook = async (req, res, next) => {
     return res.end(JSON.stringify(resData));
 }
 
+exports.addStock = async (req, res, next) =>{
+    
+    let sid         = req.body.sid;
+    let shareName   = req.body.shareName;
+    let data        = {'sid':sid, 'share_name' : shareName};
+
+    let shareDetails    = await Stock.findOne({sid:sid}).limit(300)
+                                    .then(data=>{
+                                        return data;
+                                    })
+                                    .catch(err=>console.log(err));
+
+    
+    //const doc       = await Stock.create(data);
+
+    let resData = {"status":200, msg:"Share added successfully!", stockData: data, doc: shareDetails};
+    console.log('-: Completed :-');
+    return res.end(JSON.stringify(resData));
+
+}
 
 exports.updStockParam = async (req, res, next) =>{
 
@@ -498,7 +523,7 @@ exports.updStockParam = async (req, res, next) =>{
     }
 
 
-    let resData = {"status":201, msg:"Trade data updated successfully!", stockData:stockData};
+    let resData = {"status":201, msg:"Stock data updated successfully!", stockData:stockData};
     console.log('-: Completed :-');
     return res.end(JSON.stringify(resData));
 }

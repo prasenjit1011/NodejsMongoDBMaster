@@ -9,5 +9,6 @@ router.get('/update/stock/details', stockCtrl.updateStockData);
 router.post('/uploadFile', stockCtrl.tradeBook);
 router.get('/tradedata', stockCtrl.getTradeData);
 router.post('/updStockParam', stockCtrl.updStockParam);
+router.post('/stock/add', stockCtrl.addStock);
 
 module.exports  = router;

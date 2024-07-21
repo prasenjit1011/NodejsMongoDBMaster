@@ -14,6 +14,10 @@ const stockSchema = new Schema({
     type: String,
     required: false
   },
+  rank:{
+    type: Number,
+    require: false
+  },
   ltp: {
     type: Number,
     required: false
@@ -30,7 +34,7 @@ const stockSchema = new Schema({
     type: Number,
     required: false
   },
-  sid_grow:{
+  growCode:{
     type: String,
     required: false
   },
