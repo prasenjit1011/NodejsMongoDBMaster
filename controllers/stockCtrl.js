@@ -29,12 +29,13 @@ exports.getStockList = async (req, res, next) => {
         return res.end(JSON.stringify(resData));
     }
    
-    let fields      = { "_id": 0, "sid": 1, "share_name": 1, "qty": 1, "sold_qty": 1, "stock": 1, "sharecode": 1 };
+    let fields      = { "_id": 0, "sid": 1, "share_name": 1, "rank": 1, "qty": 1, "sold_qty": 1, "stock": 1, "sharecode": 1 };
     let sidsData    = await Stock.aggregate([
                                 { $sort:{ sid : 1 }},
                                 { 
                                     $match: { 
-                                        ////qty:{ $gt: 0 }, 
+                                        // qty:{ $gt: 0 }, 
+                                        // rank: 724,
                                         sid: {$ne:null} 
                                     } 
                                 },
@@ -60,10 +61,16 @@ exports.getStockList = async (req, res, next) => {
 
     let sids    = sidsData.map(data=>data.sid).toString();
     let sidData = {};
+    let rank    = 9999;
     sidsData.forEach(data=>{
-        sidData[data.sid] = {"sid": data.sid, "sharecode": data.sharecode, "stock": data.stock, "share_name": data.share_name, "qty": data.qty, "sold_qty": data.sold_qty, "cqty": (data.qty-data.sold_qty)};
+        rank = 9999;
+        if(data.rank){
+            rank = data.rank;
+        }
+        
+        sidData[data.sid] = {"sid": data.sid, "sharecode": data.sharecode, "stock": data.stock, "share_name": data.share_name, "rank": rank, "qty": data.qty, "sold_qty": data.sold_qty, "cqty": (data.qty-data.sold_qty)};
     });
-    
+
 
     let apiUrl = apiList['tickertape']+sids;
     let priceData = await fetch(apiUrl)
