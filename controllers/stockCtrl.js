@@ -18,28 +18,46 @@ const apiList       = {
                
 
 exports.getStockList = async (req, res, next) => {
+
+    console.log('--- stock/list ---->>>');
+    //let resultData = {"status":200, msg:"Iam LTP"};
+    //Stock.updateMany({}, {$rename:{"sid_grow":"growCode"}}, true, true)
+    //return res.end(JSON.stringify(resultData));
+
+
+
+
     let cacheSidData        = myCache.get("cacheSidData");
     let cacheApiData        = myCache.get("cacheApiData");
-    
-    console.log('--- stock/list ----');
+    let stockRank = 99999;
 
-    if(cacheSidData !== undefined &&  cacheApiData !== undefined){
+    if(req.query?.rank){
+        if(req.query?.rank > 0){
+            stockRank = req.query?.rank;
+        }
+    }
+
+    stockRank = parseInt(stockRank);    
+
+    if(stockRank === 999 && cacheSidData !== undefined &&  cacheApiData !== undefined){
         console.log('-- Cache Data --');
         let resData = {"status":201, msg:"LTP fetch from cache successfully!1234", sidData: cacheSidData, apiData: cacheApiData};
-        return res.end(JSON.stringify(resData));
+        //return res.end(JSON.stringify(resData));
     }
    
-    let fields      = { "_id": 0, "sid": 1, "share_name": 1, "rank": 1, "qty": 1, "sold_qty": 1, "stock": 1, "sharecode": 1 };
+    let fields      = { "_id": 1, "iciciCode": 1, "nseCode": 1, "sid": 1, "share_name": 1, "rank": 1, "qty": 1, "sold_qty": 1, "stock": 1, "sharecode": 1 };
     let sidsData    = await Stock.aggregate([
                                 { $sort:{ sid : 1 }},
                                 { 
-                                    $match: { 
+                                    $match: {
                                         // qty:{ $gt: 0 }, 
-                                        // rank: 724,
+                                        // rank: 278,
+                                        // rank: { $lt: 10 },
+                                        // rank: { $lt: stockRank },
                                         sid: {$ne:null} 
                                     } 
                                 },
-                                //{ $match: { sid:{ $in:['HAP', 'HUDC', 'DABU', 'ASOK', 'DOLA', 'BION', 'ADAN']}} },
+                                //{ $match: { sid:{ $in:['DABU', 'TCS', 'ADAN']}} },//'HAP', 'HUDC', 'ASOK', 'DOLA', , 'BION'
                                 { $project: fields }
                             ])
                             .limit(1000)
@@ -53,7 +71,7 @@ exports.getStockList = async (req, res, next) => {
                             });
                             //.find({}, fields).limit(3000)
     
-    console.log('Type of  ='+ typeof(sidsData));
+    console.log('Type of  ='+ typeof(sidsData), sidsData);
     if(typeof(sidsData) !== 'object'){
         let resData = {"status":201, msg:"LTP not fetch from API!", sidData: [], apiData: []};
         return res.end(JSON.stringify(resData));
@@ -62,13 +80,20 @@ exports.getStockList = async (req, res, next) => {
     let sids    = sidsData.map(data=>data.sid).toString();
     let sidData = {};
     let rank    = 9999;
+    let stockName = 'NA';
     sidsData.forEach(data=>{
         rank = 9999;
         if(data.rank){
             rank = data.rank;
         }
+
+        //stockName = 'NA';
+        stockName = data.stock ?? 'NA';
+        nseCode = data.nseCode ?? 'NA';
+        //stockName = data.stock;
+
         
-        sidData[data.sid] = {"sid": data.sid, "sharecode": data.sharecode, "stock": data.stock, "share_name": data.share_name, "rank": rank, "qty": data.qty, "sold_qty": data.sold_qty, "cqty": (data.qty-data.sold_qty)};
+        sidData[data.sid] = {"sid": data.sid, "sharecode": data.sharecode, "nseCode": nseCode, "iciciCode": data.iciciCode, "stock": stockName, "share_name": data.share_name, "rank": rank, "qty": data.qty, "sold_qty": data.sold_qty, "cqty": (data.qty-data.sold_qty)};
     });
 
 

@@ -6,7 +6,7 @@ const stockSchema = new Schema({
     type: String,
     required: true
   },
-  stock:{
+  stock:{ // iciciCode
     type: String,
     required: false
   },
@@ -34,7 +34,15 @@ const stockSchema = new Schema({
     type: Number,
     required: false
   },
+  // iciciCode:{
+  //   type: String,
+  //   required: false
+  // },
   growCode:{
+    type: String,
+    required: false
+  },
+  sid_grow:{
     type: String,
     required: false
   },
