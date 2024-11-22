@@ -340,6 +340,16 @@ exports.getShareDetails = async (req, res, next) => {
         return res.end(JSON.stringify(data1));
     }
 
+    if(typeof(shareDetails?.iciciCode) == 'undefined' && typeof(shareDetails?.stock) != 'undefined'){
+        var updArr      = {};
+
+        updArr['iciciCode']   = shareDetails?.stock;
+        await Stock.updateOne(
+                            { 'sid': sid }, 
+                            updArr
+                        );
+    }
+
     let transactionDetails  = await Tradebook.find({sid:sid}).sort({created_at: "ascending"}).limit(300)
                                                 .then(data=>{
                                                     return data;
