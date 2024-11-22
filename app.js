@@ -4,6 +4,13 @@ const express       = require('express');
 const bodyParser    = require('body-parser');
 const mongoose      = require('mongoose');
 const MONGODB_URI   = "mongodb+srv://tester:tester1234@cluster0.hlicuim.mongodb.net/demat?retryWrites=true&w=majority";//&replicaSet=rs0";
+//https://cloud.mongodb.com/
+//Login with prasenjit.aluni@gmail.com
+//Prasenjit's Org - 2021-07-09
+//project01
+//Cluster->Browse Collection->demat
+//git push https://prasenjit1011:ACCESS_TOKEN@github.com/prasenjit1011/NodeJSMongoDBMaster
+//https://github.com/settings/tokens?type=beta
 
 
 const app   = express();

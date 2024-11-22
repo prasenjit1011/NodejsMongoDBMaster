@@ -10,6 +10,10 @@ const stockSchema = new Schema({
     type: String,
     required: false
   },
+  iciciCode:{
+    type: String,
+    required: false
+  },
   share_name: {
     type: String,
     required: false
@@ -34,10 +38,6 @@ const stockSchema = new Schema({
     type: Number,
     required: false
   },
-  // iciciCode:{
-  //   type: String,
-  //   required: false
-  // },
   growCode:{
     type: String,
     required: false
