@@ -54,6 +54,8 @@ exports.getStockList = async (req, res, next) => {
                                         // rank: 278,
                                         // rank: { $lt: 10 },
                                         // rank: { $lt: stockRank },
+                                        // stock: {$ne:null},
+                                        // iciciCode: {$eq:null},
                                         sid: {$ne:null} 
                                     } 
                                 },
@@ -340,14 +342,15 @@ exports.getShareDetails = async (req, res, next) => {
         return res.end(JSON.stringify(data1));
     }
 
-    if(typeof(shareDetails?.iciciCode) == 'undefined' && typeof(shareDetails?.stock) != 'undefined'){
+    if(typeof(shareDetails?.iciciCode) == 'undefined'){
         var updArr      = {};
-
-        updArr['iciciCode']   = shareDetails?.stock;
-        await Stock.updateOne(
-                            { 'sid': sid }, 
-                            updArr
-                        );
+        if(typeof(shareDetails?.stock) != 'undefined'){
+            updArr['iciciCode']   = shareDetails?.stock;
+        }
+        else{
+            updArr['iciciCode']   = 'NA';
+        }
+        await Stock.updateOne({ 'sid': sid }, updArr);
     }
 
     let transactionDetails  = await Tradebook.find({sid:sid}).sort({created_at: "ascending"}).limit(300)
