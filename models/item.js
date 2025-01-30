@@ -8,9 +8,8 @@ const Item = dbconnect.define('articles', {
         allowNull: false,
         primaryKey: true
     },
-    title: Sequelize.STRING,
-    price: Sequelize.FLOAT,
-    image: Sequelize.STRING
+    title: Sequelize.STRING
 });
+
 
 module.exports = Item;

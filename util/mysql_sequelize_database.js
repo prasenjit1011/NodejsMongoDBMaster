@@ -1,9 +1,10 @@
 const Sequelize = require('sequelize');
 
-const dbconnect = new Sequelize('test', 'root', 'password', {
-  dialect: 'mysql',
+const dbconnect = new Sequelize('test', 'root', '', {
   host: 'localhost',
-  port: 3632
+  dialect: 'mysql',
 });
+
+
 
 module.exports = dbconnect;
