@@ -26,11 +26,8 @@ npm i redis
 
 ## express version : 4.17.1
 ## redis version : 3.0.2
-
-
-
 ## SET mykey "Hello Lnsel"
-## GET mykey "Hello Lnsel"
+## GET mykey
 
 ## const redis = require('redis');
 ## const { promisify } = require('util');
