@@ -1,17 +1,15 @@
-# NodeJS master project with ExpressJS.
-
+# NodeJS master project with ExpressJS and Docker, Docker-Compose Setup.
 Using MongoDB with mongoose  <br />
 Using SQL with Sequelize  <br />
 
 ## Important command list
-
+# Important command
 npm init <br />
 npm i --save express express-session body-parser ejs jsonwebtoken bcryptjs cookie-parser csurf csrf <br />
 npm i --save mongodb mongoose connect-mongodb-session mysql2 sequelize <br />
 
 npm i --save-dev nodemon <br />
 nodemon app.js <br />
-
 
 ## Ejs Template Engine 
 
@@ -61,8 +59,11 @@ data 			= jwt.verify(token, 'mysecret'); <br />
 ## Javascript Promise with Example ( mypromise.js and app.js )
 
 
+### Docker CMD List
+```bash
+# Start Docker Desktop as Administrator
+# CMD : Check docker status : 
+docker --version
+docker-compose up --build
 
-
-
-
-
+```
