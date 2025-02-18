@@ -1,18 +1,32 @@
-version: "3.8"
-
+version: '3.8'
 services:
-  app:
-    build: .
-    container_name: mynodejs
-    ports:
-      - "3080:3080"  # map port 3000 on your host to port 3000 in the container
-    volumes:
-      - .:/app  # Mount current directory to /app in the container
+  mysql_db:
+    image: mysql:latest
+    container_name: mysql_db
     environment:
-      - NODE_ENV=development
+      MYSQL_ROOT_PASSWORD: lnsel
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3307:3308"
     networks:
-      - node-network
+      - app-network
+
+  nodejs_app:
+    build: .
+    container_name: nodejs_app
+    environment:
+      DB_HOST: mysql_db
+      DB_PORT: 3309
+      DB_USER: root
+      DB_PASSWORD: lnsel
+      DB_NAME: mydb
+    ports:
+      - "3080:3080"
+    depends_on:
+      - mysql_db
+    networks:
+      - app-network
 
 networks:
-  node-network:
+  app-network:
     driver: bridge

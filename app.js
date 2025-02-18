@@ -1,16 +1,32 @@
-console.log('\n\n-: Docker Nodejs App Started :-');
+const express = require('express');
+const Sequelize = require('sequelize');
+const app = express();
+const port = 3080;
 
-const express   = require('express');
-const item      = require('./models/item');
-const app       = express();
-
-app.use('/', async (req, res, next)=>{
-    const itemData = await item.findAll({raw:true});
-    console.log(itemData);
-    console.log('-: My Docker Nodejs App Running Successfully :-');
-    res.send('-: My Docker Nodejs App Running Successfully :-====');
-    next();
+// Create a Sequelize instance to connect to MySQL
+const sequelize = new Sequelize({
+  host: 'mysql_db',
+  dialect: 'mysql',
+  port: 3305,
+  username: 'root',
+  password: 'lnsel',
+  database: 'mydb'
 });
 
-console.log('-: My Docker Nodejs App Running Successfully :-');
-app.listen(3088);
+// // Test the MySQL connection
+sequelize.authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err);
+  });
+
+// Basic route to check if the server is running
+app.get('/', (req, res) => {
+  res.send('Hello World! 123');
+});
+
+app.listen(port, () => {
+  console.log(`App listening at http://localhost:3080`);
+});
