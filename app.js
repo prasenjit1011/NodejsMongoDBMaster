@@ -1,32 +1,53 @@
-const express = require('express');
-const Sequelize = require('sequelize');
+const express   = require('express');
+const mysql     = require('mysql2');
+require('dotenv').config();
+
 const app = express();
-const port = 3080;
+const port = 3000;
 
-// Create a Sequelize instance to connect to MySQL
-const sequelize = new Sequelize({
-  host: 'mysql_db',
-  dialect: 'mysql',
-  port: 3305,
-  username: 'root',
+// MySQL connection setup
+const db = mysql.createConnection({
+  host: 'mysql',  // This should match the MySQL service name from docker-compose.yml
+  user: 'root',
   password: 'lnsel',
-  database: 'mydb'
+  database: 'mydb01'
 });
 
-// // Test the MySQL connection
-sequelize.authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch((err) => {
-    console.error('Unable to connect to the database:', err);
+// // Connect to MySQL
+db.connect((err) => {
+  if (err) {
+    console.error('Error connecting to MySQL:', err.stack);
+    return;
+  }
+  console.log('Connected to MySQL as id ' + db.threadId);
+});
+
+// Fetch data from the `myemployee` table
+app.get('/employees', (req, res) => {
+  const query = 'SELECT * FROM myemployee';
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching data:', err.stack);
+      res.status(500).send('Error fetching data');
+      return;
+    }
+    res.json(results);
   });
-
-// Basic route to check if the server is running
-app.get('/', (req, res) => {
-  res.send('Hello World! 123');
 });
 
+app.get('/', (req, res) => {
+    return res.json([
+                parseInt(100*Math.random()),
+                parseInt(100*Math.random()),
+                parseInt(100*Math.random()),
+                parseInt(100*Math.random()),
+                parseInt(100*Math.random())
+            ]);
+});
+
+console.log('-: Docker Started :-');
+// Start the server
 app.listen(port, () => {
-  console.log(`App listening at http://localhost:3080`);
+  console.log(`Node.js app is listening on http://localhost:${port}`);
 });
