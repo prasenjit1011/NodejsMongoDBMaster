@@ -15,19 +15,6 @@ const store         = new mongodbStore({ uri: MONGODB_URI, collection: 'sessions
 const graphqlSchema     = require('./graphql/schema');
 const graphqlResolver   = require('./graphql/resolvers');
 
-// // Define GraphQL Schema
-// const schema = buildSchema(`
-//   type Query {
-//     hello: String
-//     user(name: String!): String
-//   }
-// `);
-
-// // Define Resolvers
-// const root = {
-//   hello: () => "Hello, World 888!",
-//   user: ({ name }) => `Hello, ${name}!`,
-// };
 
 // Initialize Express Server
 const app = express();

@@ -6,11 +6,6 @@ const mongoose      = require('mongoose');
 const session       = require('express-session');
 const mongodbStore  = require('connect-mongodb-session')(session);
 
-//const {graphqlHttp}   = require('express-graphql');
-//const graphqlHTTP     = require('express-graphql').graphqlHTTP;
-const gqlHTTP           = require('express-graphql');
-const graphqlSchema     = require('./graphql/schema');
-const graphqlResolver   = require('./graphql/resolvers');
 
 
 //const cookieParser  = require('cookie-parser');
@@ -77,25 +72,6 @@ app.use(article);
 
 const item = require('./routes/item');
 app.use(item);
-
-app.use('/graphql', 
-            gqlHTTP.graphqlHTTP({
-                        schema:graphqlSchema, 
-                        rootValue: graphqlResolver, 
-                        graphiql:true,
-                        formatError(err){
-
-                            if(!err.originalError){
-                                return err;
-                            }
-
-                            const data = err.originalError.data;
-                            const message = err.message || 'An error occured!';
-                            const code = err.originalError.status || 500;
-
-                            return {message:message, status:code, data:data};
-                        }
-                    }));
 
 app.use('/', (req, res, next)=>{
     console.log('-: Welcome :-');
