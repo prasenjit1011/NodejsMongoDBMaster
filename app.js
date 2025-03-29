@@ -1,6 +1,7 @@
 console.log('\n\n-: Docker Nodejs App Started :-');
 
 const express       = require('express');
+const cors          = require('cors');
 const bodyParser    = require('body-parser');
 const mongoose      = require('mongoose');
 const session       = require('express-session');
@@ -29,6 +30,7 @@ const fileFilter = (req, file, cb) => {
 
 
 const app   = express();
+app.use(cors());
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.use(express.static('images'));
