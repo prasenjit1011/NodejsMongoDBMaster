@@ -1,3 +1,4 @@
+console.clear();
 console.log('\n\n-: App Started :-');
 
 const express   = require('express');
