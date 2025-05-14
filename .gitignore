@@ -14,3 +14,5 @@ yarn-error.log
 /.idea
 /.vscode
 /.clinic
+my-snapshot.heapsnapshot
+/heapdump
