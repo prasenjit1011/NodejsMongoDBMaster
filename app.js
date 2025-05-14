@@ -1,3 +1,4 @@
+console.clear();
 console.log('\n\n-: App Started :-');
 
 const express       = require('express');
@@ -5,6 +6,7 @@ const bodyParser    = require('body-parser');
 const mongoose      = require('mongoose');
 const session       = require('express-session');
 const mongodbStore  = require('connect-mongodb-session')(session);
+const heapdump      = require('heapdump');
 
 //const cookieParser  = require('cookie-parser');
 const csrf          = require('csurf')
@@ -47,6 +49,8 @@ app.use((req, res, next) => {
     next();
 });
 
+heapdump.writeSnapshot('./my-snapshot.heapsnapshot');
+setInterval(() => { console.log(process.memoryUsage());}, 50000000);
 
 const auth = require('./routes/auth');
 app.use(auth);
