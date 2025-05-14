@@ -16,3 +16,5 @@ yarn-error.log
 /images
 /.clinic
 /my-snapshot.heapsnapshot
+/public/tradebook/*
+/heapdump
