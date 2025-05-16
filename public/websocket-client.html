@@ -1,0 +1,23 @@
+<!-- client.html -->
+<!DOCTYPE html>
+<html>
+<head><title>BTC Price WebSocket</title></head>
+<body>
+  <h1>Live BTC Price</h1>
+  <div id="price">Connecting...</div>
+
+  <script>
+    const ws = new WebSocket('ws://localhost:3000');
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.price) {
+        document.getElementById('price').innerText = `BTC-USD: $${data.price}`;
+      }
+    };
+
+    ws.onopen = () => console.log('Connected to local WebSocket');
+    ws.onclose = () => console.log('Disconnected');
+  </script>
+</body>
+</html>
