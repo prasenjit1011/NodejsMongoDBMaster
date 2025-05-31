@@ -5,11 +5,21 @@ const express   = require('express');
 const app       = express();
 
 app.use('/', (req, res, next)=>{
-    console.log('-: Welcome :-');
-    res.send('-: Welcome :-');
-
-    next()
+    try{
+        console.log('-: Welcome :-');
+        res.send('-: Welcome :-'+x);
+        next()
+    }
+    catch(e){
+        throw new Error('Synchronous Error!');
+    }
 });
+
+// Simulated async error
+app.get('/async', async (req, res, next) => {
+  Promise.reject(new Error('Unhandled Promise Rejection!'));
+});
+
 
 // Centralized Error Handler
 app.use((err, req, res, next) => {
@@ -18,4 +28,30 @@ app.use((err, req, res, next) => {
 });
 
 console.log('-: App Running :-');
-app.listen(3000);
+const server = app.listen(3000, () => {
+  console.log('Server running on http://localhost:3000');
+});
+
+// ----------------------------
+// 🔒 Process-Level Error Handling
+// ----------------------------
+
+// Catch synchronous exceptions not caught in routes
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+  shutdownGracefully();
+});
+
+// Catch unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection:', reason);
+  shutdownGracefully();
+});
+
+// Graceful shutdown
+function shutdownGracefully() {
+  console.log('Shutting down server...');
+  server.close(() => {
+    process.exit(1);
+  });
+}
