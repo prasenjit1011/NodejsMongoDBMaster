@@ -5,8 +5,15 @@ exports.getShop = (req, res, next)=>{
     res.render('./shop/page');
 }
 
-exports.getShopList = (req, res, next)=>{
+exports.getShopList = async (req, res, next)=>{
     console.log('-: Welcome to shop listing page :-');
+    const dtd       = new Date;
+    const dtdstr    = dtd.getDate()+'-'+dtd.getSeconds()
+    const newShop = new Shop('Dummy Shop '+dtdstr, 'Hyderabad');
+    await newShop.save()
+            .then(result=>{console.log('Shop added :: ', result);})
+            .catch(err=>console.log(err));
+
     Shop.fetchAll()
         .then(data => {
                 res.render('./shop/list', {csrfToken:req.csrfToken(), shoplist:data})
