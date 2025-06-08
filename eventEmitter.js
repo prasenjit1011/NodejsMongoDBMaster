@@ -1,8 +1,5 @@
 // myClass.js
 class EventEmitter {
-
-
-
     constructor() {
       this.events = {};
     }
@@ -41,10 +38,6 @@ class EventEmitter {
       };
       this.on(eventName, wrapper);
     }
-
-  
-
-
 
 }
 

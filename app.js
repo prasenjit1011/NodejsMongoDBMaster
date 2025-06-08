@@ -10,7 +10,7 @@ const EventEmitter = require('./eventEmitter');
 const emitter = new EventEmitter();
 
 function greet(name) {
-  console.log(`Hello, ${name}`);
+  console.log(`Hello123, ${name}`);
 }
 
 emitter.on('sayHi', greet);
