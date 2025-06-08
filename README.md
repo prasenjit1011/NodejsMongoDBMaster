@@ -1,5 +1,8 @@
 # NodeJS master project with ExpressJS.
 # Event Listner : nodemon myevent * Crud with Object *
+# GraphQL : nodemon mygraphqlbook * Book Add, Book List
+# GraphQL : nodemon mygraphqlbookdata * Book Details, Book Search *
+# GraphQL : nodemon mygraphqlbookdetails * Book-Author Ralation *
 
 
 Using MongoDB with mongoose  <br />

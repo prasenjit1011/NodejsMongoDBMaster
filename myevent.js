@@ -1,7 +1,12 @@
-
 const users     = {};
 const app       = require('express')();
 const eventData = new (require('events'))();
+
+app.use(require('helmet')());
+app.use(require('cookie-parser')());
+app.use(require('csurf')({ cookie: true }));
+app.use(require('body-parser').urlencoded({ extended: false }));
+
 
 eventData.on('hello',(data)=>{
     const cnt   = Object.keys(users).length
@@ -14,7 +19,6 @@ app.get('/event/hello/:txt',(req, res)=>{
     eventData.emit('hello', req.params.txt);
     res.json('Event Created Successfully!')
 });
-
 
 
 app.get('/event/data',(req, res)=>{
@@ -37,5 +41,5 @@ app.use('/', (req, res)=>{
 
 app.listen(3000,()=>{
     console.clear();
-    console.log('App created')
+    console.log('App created successfully! :)')
 })
