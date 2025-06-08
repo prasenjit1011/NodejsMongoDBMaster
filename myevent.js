@@ -1,15 +1,11 @@
-const express   = require('express');
-const Event     = require('events');
 
-const app       = express();
-const eventData = new Event();
 const users     = {};
+const app       = require('express')();
+const eventData = new (require('events'))();
 
 eventData.on('hello',(data)=>{
     const cnt   = Object.keys(users).length
     users[cnt]  = data;
-
-    console.log('Cnt : ', cnt);
     console.log('Event Hello Received : ', data);
 });
 
@@ -27,6 +23,11 @@ app.get('/event/data',(req, res)=>{
 
 app.get('/event/update/:id/:txt',(req, res)=>{
     users[req.params.id]  = req.params.txt;
+    res.json(users)
+});
+
+app.get('/event/delete/:id',(req, res)=>{
+    delete users[req.params.id];
     res.json(users)
 });
 
