@@ -11,3 +11,14 @@ nodemon app.js <br />
 # Ejs Template Engine 
 
 <%= %> <br />
+
+
+```bash
+### Example 01:
+npm start
+concurrently nodemon user-service/index nodemon product-service/index nodemon api-gateway/index
+Api Gateway, Product Service, User Service run on different PORT, All services can run independently
+
+
+
+```
