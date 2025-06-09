@@ -4,25 +4,24 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stage: local
+  stage: local  # Remove stage prefix like /dev
 
 functions:
   app:
     handler: src/handler.handler
     events:
       - http:
-          path: /
+          path: /        # ✅ Empty string means root "/"
           method: get
       - http:
-          path: about
+          path: about      # ✅ no starting slash
           method: get
       - http:
-          path: dummy
+          path: dummy      # ✅ no starting slash
           method: get
 
 plugins:
   - serverless-offline
-
 
 custom:
   serverless-offline:
