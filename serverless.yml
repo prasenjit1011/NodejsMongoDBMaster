@@ -1,0 +1,20 @@
+service: nodejs-lambda-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  memorySize: 128
+  timeout: 10
+  stage: dev
+  lambdaHashingVersion: 20201221
+
+functions:
+  hello:
+    handler: handler.hello
+    url: true  # Enable public Lambda URL
+
+plugins:
+  - serverless-offline  # Optional: for local testing
