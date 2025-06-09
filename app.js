@@ -7,9 +7,11 @@ const app       = express();
 app.use('/', (req, res, next)=>{
     console.log('-: Welcome :-');
     res.send('-: Welcome :-');
-
     next()
 });
+
+
+
 
 // Centralized Error Handler
 app.use((err, req, res, next) => {
