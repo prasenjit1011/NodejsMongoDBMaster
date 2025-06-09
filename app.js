@@ -1,73 +1,48 @@
+// app.js
 const express = require('express');
-const app = express();
+const cors = require('cors');
 const { hello } = require('./handlers');
+
+const app = express();
+app.use(express.json());
+app.use(cors());
 
 console.clear();
 console.log('\n\n-: App Started :-');
 
-// JSON middleware
-app.use(express.json());
-
-// Route for /test
-app.use('/test', (req, res) => {
+app.get('/test', (req, res) => {
   res.json(['test']);
 });
 
-// Route to wrap Lambda handler
-app.use('/hello', async (req, res, next) => {
-    try {
-      // Construct a fake AWS Lambda event
-      const event = {
-        body: req.body,
-        queryStringParameters: req.query,
-        headers: req.headers,
-        httpMethod: req.method,
-        path: req.path,
-      };
-  
-      const result = await hello(event);
-  
-      res.status(result.statusCode || 200).json(JSON.parse(result.body));
-    } catch (err) {
-      next(err);
-    }
-  });
+app.post('/hello', async (req, res, next) => {
+  try {
+    const event = {
+      body: JSON.stringify(req.body),
+      queryStringParameters: req.query,
+      headers: req.headers,
+      httpMethod: req.method,
+      path: req.originalUrl,
+    };
 
+    const result = await hello(event);
+    res.status(result.statusCode || 200).json(JSON.parse(result.body));
+  } catch (err) {
+    next(err);
+  }
+});
 
-// Route to wrap Lambda handler
-app.use('/test', async (req, res, next) => {
-    try {
-      // Simulated Lambda response object
-      const result = {
-        statusCode: 200,
-        body: JSON.stringify({
-          a: "hello",
-          b: "dummy"
-        })
-      };
-  
-      // Return the parsed response
-      res.status(result.statusCode).json(JSON.parse(result.body));
-    } catch (err) {
-      next(err);
-    }
-  });
-  
+app.get('/dummy', (req, res) => {
+  res.status(200).json({ a: 'hello', b: 'dummy' });
+});
 
-
- 
-
-// Default route
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
   console.log('-: Welcome :-');
   res.send('-: Welcome :-');
 });
 
-// Centralized error handler
 app.use((err, req, res, next) => {
   console.error('Central Error Handler:', err.message);
   res.status(500).json({ message: 'Internal Server Error', error: err.message });
 });
 
-console.log('-: App Running :-');
-app.listen(3000);
+app.listen(3000, () => console.log('-: App Running at http://localhost:3000 :-'));
