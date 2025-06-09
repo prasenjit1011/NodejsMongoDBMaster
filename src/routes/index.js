@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.send('Welcome to Lambda Home Page!');
+    res.send('Welcome to Lambda Home Page! 2102');
 });
   
 router.get('/dummy', (req, res) => {
-    res.send('Dummy page from Lambda....');
+    res.send('Dummy page from Lambda.... 2103');
 });
 
 router.get('/about', (req, res) => {
