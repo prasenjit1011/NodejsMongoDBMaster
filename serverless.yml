@@ -1,19 +1,39 @@
-service: nodejs-lambda-api
+# service: nodejs-lambda-api
 
-frameworkVersion: '^3.0.0'
+# frameworkVersion: '^3.0.0'
+
+# provider:
+#   name: aws
+#   runtime: nodejs20.x
+#   region: us-east-1
+#   stage: dev
+#   timeout: 10
+#   memorySize: 128
+
+# functions:
+#   hello:
+#     handler: handler.hello
+#     url: true  # Enables AWS Lambda Function URL (public endpoint)
+
+# plugins:
+#   - serverless-offline  # optional, for local testing
+service: node-lambda-app
 
 provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stage: dev
-  timeout: 10
-  memorySize: 128
 
 functions:
-  hello:
-    handler: handler.hello
-    url: true  # Enables AWS Lambda Function URL (public endpoint)
+  app:
+    handler: src/handler.handler
+    events:
+      - http:
+          path: /
+          method: get
+      - http:
+          path: about
+          method: get
 
-# plugins:
-#   - serverless-offline  # optional, for local testing
+plugins:
+  - serverless-offline
