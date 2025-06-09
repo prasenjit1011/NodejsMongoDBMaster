@@ -15,23 +15,47 @@ app.use('/test', (req, res) => {
 
 // Route to wrap Lambda handler
 app.use('/hello', async (req, res, next) => {
-  try {
-    // Construct a fake AWS Lambda event
-    const event = {
-      body: req.body,
-      queryStringParameters: req.query,
-      headers: req.headers,
-      httpMethod: req.method,
-      path: req.path,
-    };
+    try {
+      // Construct a fake AWS Lambda event
+      const event = {
+        body: req.body,
+        queryStringParameters: req.query,
+        headers: req.headers,
+        httpMethod: req.method,
+        path: req.path,
+      };
+  
+      const result = await hello(event);
+  
+      res.status(result.statusCode || 200).json(JSON.parse(result.body));
+    } catch (err) {
+      next(err);
+    }
+  });
 
-    const result = await hello(event);
 
-    res.status(result.statusCode || 200).json(JSON.parse(result.body));
-  } catch (err) {
-    next(err);
-  }
-});
+// Route to wrap Lambda handler
+app.use('/test', async (req, res, next) => {
+    try {
+      // Simulated Lambda response object
+      const result = {
+        statusCode: 200,
+        body: JSON.stringify({
+          a: "hello",
+          b: "dummy"
+        })
+      };
+  
+      // Return the parsed response
+      res.status(result.statusCode).json(JSON.parse(result.body));
+    } catch (err) {
+      next(err);
+    }
+  });
+  
+
+
+ 
 
 // Default route
 app.use('/', (req, res) => {
