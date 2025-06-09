@@ -1,4 +1,4 @@
-name: Deploy Node.js to AWS Lambda
+nname: Deploy to AWS Lambda
 
 on:
   push:
@@ -7,28 +7,38 @@ on:
 
 jobs:
   deploy:
+    name: Deploy Node.js Lambda
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout source
+        uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-    - name: Install Dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Zip Lambda Package
-      run: zip -r function.zip . -x "node_modules/*" ".git/*" ".github/*"
+      - name: Zip Lambda Function
+        run: zip -r function.zip index.js node_modules package.json
 
-    - name: Deploy to Lambda
-      uses: appleboy/lambda-action@master
-      with:
-        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws_region: ${{ secrets.AWS_REGION }}
-        function_name: ${{ secrets.LAMBDA_FUNCTION_NAME }}
-        zip_file: function.zip
+      - name: Upload to Lambda
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: ${{ secrets.LAMBDA_FUNCTION_NAME }}
+          zip_file: function.zip
+
+      - name: Output Lambda Function URL
+        run: |
+          aws lambda get-function-url-config \
+            --function-name ${{ secrets.LAMBDA_FUNCTION_NAME }} \
+            --region ${{ secrets.AWS_REGION }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
