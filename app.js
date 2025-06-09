@@ -1,21 +1,48 @@
+const express = require('express');
+const app = express();
+const { hello } = require('./handlers');
+
 console.clear();
 console.log('\n\n-: App Started :-');
 
-const express   = require('express');
-const app       = express();
+// JSON middleware
+app.use(express.json());
 
-app.use('/', (req, res, next)=>{
-    console.log('-: Welcome :-');
-    res.send('-: Welcome :-');
-    next()
+// Route for /test
+app.use('/test', (req, res) => {
+  res.json(['test']);
 });
 
+// Route to wrap Lambda handler
+app.use('/hello', async (req, res, next) => {
+  try {
+    // Construct a fake AWS Lambda event
+    const event = {
+      body: req.body,
+      queryStringParameters: req.query,
+      headers: req.headers,
+      httpMethod: req.method,
+      path: req.path,
+    };
 
+    const result = await hello(event);
 
-// Centralized Error Handler
+    res.status(result.statusCode || 200).json(JSON.parse(result.body));
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Default route
+app.use('/', (req, res) => {
+  console.log('-: Welcome :-');
+  res.send('-: Welcome :-');
+});
+
+// Centralized error handler
 app.use((err, req, res, next) => {
-    console.error('Central Error Handler:', err.message);
-    res.status(500).json({ message: 'Internal Server Error', error: err.message });
+  console.error('Central Error Handler:', err.message);
+  res.status(500).json({ message: 'Internal Server Error', error: err.message });
 });
 
 console.log('-: App Running :-');
