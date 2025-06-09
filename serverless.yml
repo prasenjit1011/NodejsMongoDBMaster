@@ -15,5 +15,5 @@ functions:
     handler: handler.hello
     url: true  # Enables AWS Lambda Function URL (public endpoint)
 
-plugins:
-  - serverless-offline  # optional, for local testing
+# plugins:
+#   - serverless-offline  # optional, for local testing
