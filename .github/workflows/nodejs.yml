@@ -3,7 +3,7 @@ name: Deploy to AWS via Serverless
 on:
   push:
     branches:
-      - lambda_00
+      - lambda_00  # ✅ Only trigger on this branch
 
 jobs:
   deploy:
@@ -21,8 +21,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install Serverless Framework
-        run: npm install -g serverless
+      - name: Install Serverless Framework v3
+        run: npm install -g serverless@3
+
+      - name: Show Serverless version
+        run: sls --version
 
       - name: Deploy with Serverless Framework
         run: sls deploy --stage dev
