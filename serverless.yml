@@ -2,28 +2,32 @@ service: node-lambda-app
 
 provider:
   name: aws
-  runtime: nodejs20.x
+  runtime: nodejs18.x  # Use supported runtime
   region: us-east-1
-  stage: local
+  stage: prod
+
+  httpApi:
+    name: node-lambda-app-api
+    disableDefaultEndpoint: false  # Keep the default endpoint active
+    cors: true  # Optional if needed
 
 functions:
   app:
     handler: src/handler.handler
     events:
-      - http:
+      - httpApi:
           path: /
           method: get
-      - http:
-          path: about
+      - httpApi:
+          path: /about
           method: get
-      - http:
-          path: dummy
+      - httpApi:
+          path: /dummy
           method: get
 
 plugins:
   - serverless-offline
 
-
 custom:
   serverless-offline:
-    noPrependStageInUrl: true  # ✅ removes /local prefix from path
+    noPrependStageInUrl: true
