@@ -12,7 +12,10 @@ nodemon app.js <br />
 
 <%= %> <br />
 
-** lambda_01 : AWS Lambda working fine
+AWS Lambda working fine
+** lambda_01 : npx serverless deploy
+** lambda_02 : git push
+
 rm -rf node_modules package-lock.json
 rm package-lock.json && rm -rf node_modules && npm install && npm install --package-lock-only && git add package-lock.json && git commit -m "Fix: update lockfile to match package.json" && git push
 
