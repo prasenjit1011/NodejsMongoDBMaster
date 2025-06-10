@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
 });
   
 router.get('/dummy', (req, res) => {
-    res.send('Dummy page from Lambda.... 0751');
+    res.send('Dummy page from Lambda.... 0815');
 });
 
 router.get('/about', (req, res) => {
