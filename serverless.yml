@@ -24,6 +24,18 @@ functions:
       - httpApi:
           path: /dummy
           method: get
+      - httpApi:
+          path: /users
+          method: get
+      - httpApi:
+          path: /users
+          method: post
+      - httpApi:
+          path: /products
+          method: get
+      - httpApi:
+          path: /products
+          method: post
 
 plugins:
   - serverless-offline
