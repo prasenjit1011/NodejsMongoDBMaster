@@ -14,7 +14,6 @@ router.get('/about', (req, res) => {
 });
 
 
-
 const controller = require('../modules/products/productController');
 
 router.get('/products', controller.getAll);
