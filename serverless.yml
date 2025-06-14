@@ -1,4 +1,4 @@
-service: node-lambda-app
+service: lambda05
 
 provider:
   name: aws

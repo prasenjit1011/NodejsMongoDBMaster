@@ -1,9 +1,9 @@
-name: Deploy to AWS
+name: Deploy to AWS Lambda using Serverless
 
 on:
   push:
     branches:
-      - lambda_02
+      - lambda_02_jest_01_user
 
 jobs:
   deploy:
