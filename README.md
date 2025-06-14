@@ -1,4 +1,5 @@
-# NodeJS ExpressJS 
+# NodeJS ExpressJS + Lambda + Github Action + Jest + MongoDB
+
 
 # Important command
 
