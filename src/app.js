@@ -15,6 +15,7 @@ app.use((req, res, next) => {
 });
 
 
+
 const userCtrl = require('./modules/users/user.controller');
 app.post('/users', userCtrl.create);
 app.get('/users/:id', userCtrl.get);
