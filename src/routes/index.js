@@ -24,5 +24,14 @@ router.put('/products/:id', controller.update);
 router.delete('/products/:id', controller.remove);
 
 
+const ctrl = require('../modules/customers/customer.controller');
+
+router.get('/customers', ctrl.getAll);
+router.get('/customers/:id', ctrl.getById);
+router.post('/customers/', ctrl.create);
+router.put('/customers/:id', ctrl.update);
+router.delete('/customers/:id', ctrl.remove);
+
+
 
 module.exports = router;

@@ -36,6 +36,12 @@ functions:
       - httpApi:
           path: /products
           method: post
+      - httpApi:
+          path: /customers
+          method: get
+      - httpApi:
+          path: /customers
+          method: post
 
 plugins:
   - serverless-offline

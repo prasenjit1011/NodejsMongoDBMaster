@@ -1,44 +1,102 @@
-const request = require("supertest");
-const app = require('../../app');
-const controller = require("./productController");
+const controller = require('./productController');
 
-beforeEach(() => controller.reset());
+const createMockResponse = () => {
+  const res = {};
+  res.status = jest.fn().mockReturnValue(res);
+  res.json = jest.fn().mockReturnValue(res);
+  return res;
+};
 
-describe("Product CRUD", () => {
-  test("Create product", async () => {
-    const res = await request(app)
-      .post("/products")
-      .send({ name: "Apple", price: 100 });
+beforeEach(() => {
+  controller.reset(); // Clear data before each test
+});
 
-    expect(res.statusCode).toBe(201);
-    expect(res.body.name).toBe("Apple");
+describe('Product Controller', () => {
+  test('create(): should create a product and return 201', () => {
+    const req = { body: { name: 'Apple', price: 100 } };
+    const res = createMockResponse();
+
+    controller.create(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.json).toHaveBeenCalledWith({ id: 1, name: 'Apple', price: 100 });
   });
 
-  test("Get all products", async () => {
-    await request(app).post("/products").send({ name: "A", price: 10 });
-    const res = await request(app).get("/products");
-    expect(res.body.length).toBe(1);
+  test('getAll(): should return all products', () => {
+    controller.create({ body: { name: 'A', price: 10 } }, createMockResponse());
+    controller.create({ body: { name: 'B', price: 20 } }, createMockResponse());
+
+    const req = {};
+    const res = createMockResponse();
+
+    controller.getAll(req, res);
+
+    expect(res.json).toHaveBeenCalledWith([
+      { id: 1, name: 'A', price: 10 },
+      { id: 2, name: 'B', price: 20 }
+    ]);
   });
 
-  test("Get product by ID", async () => {
-    const create = await request(app).post("/products").send({ name: "X", price: 5 });
-    const res = await request(app).get(`/products/${create.body.id}`);
-    expect(res.statusCode).toBe(200);
-    expect(res.body.name).toBe("X");
+  test('getById(): should return product if found', () => {
+    controller.create({ body: { name: 'X', price: 50 } }, createMockResponse());
+
+    const req = { params: { id: '1' } };
+    const res = createMockResponse();
+
+    controller.getById(req, res);
+
+    expect(res.json).toHaveBeenCalledWith({ id: 1, name: 'X', price: 50 });
   });
 
-  test("Update product", async () => {
-    const create = await request(app).post("/products").send({ name: "Old", price: 20 });
-    const res = await request(app)
-      .put(`/products/${create.body.id}`)
-      .send({ name: "New", price: 25 });
+  test('getById(): should return 404 if not found', () => {
+    const req = { params: { id: '99' } };
+    const res = createMockResponse();
 
-    expect(res.body.name).toBe("New");
+    controller.getById(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith({ message: 'Not found' });
   });
 
-  test("Delete product", async () => {
-    const create = await request(app).post("/products").send({ name: "Del", price: 30 });
-    const res = await request(app).delete(`/products/${create.body.id}`);
-    expect(res.body.message).toBe("Deleted");
+  test('update(): should update product if found', () => {
+    controller.create({ body: { name: 'Old', price: 20 } }, createMockResponse());
+
+    const req = { params: { id: '1' }, body: { name: 'New', price: 30 } };
+    const res = createMockResponse();
+
+    controller.update(req, res);
+
+    expect(res.json).toHaveBeenCalledWith({ id: 1, name: 'New', price: 30 });
+  });
+
+  test('update(): should return 404 if not found', () => {
+    const req = { params: { id: '99' }, body: { name: 'X', price: 10 } };
+    const res = createMockResponse();
+
+    controller.update(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith({ message: 'Not found' });
+  });
+
+  test('remove(): should delete product if found', () => {
+    controller.create({ body: { name: 'Del', price: 15 } }, createMockResponse());
+
+    const req = { params: { id: '1' } };
+    const res = createMockResponse();
+
+    controller.remove(req, res);
+
+    expect(res.json).toHaveBeenCalledWith({ message: 'Deleted' });
+  });
+
+  test('remove(): should return 404 if not found', () => {
+    const req = { params: { id: '999' } };
+    const res = createMockResponse();
+
+    controller.remove(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith({ message: 'Not found' });
   });
 });
