@@ -12,8 +12,7 @@ exports.getById = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
-  try {
-    dd(123)
+  try {    
     const customer = new Customer(req.body);
     await customer.save();
     res.status(201).json(customer);

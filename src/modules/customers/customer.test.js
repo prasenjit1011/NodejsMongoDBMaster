@@ -56,41 +56,30 @@ describe('Customer Controller', () => {
         await controller.create(req, res);
     
         expect(res.status).toHaveBeenCalledWith(201);
-        // expect(res.json).toHaveBeenCalledWith(
-        //     expect.objectContaining({
-        //         name: 'David',
-        //         email: 'david@test.com',
-        //         age: 30,
-        //     })
-        // );
+        expect(res.json).toHaveBeenCalledWith(
+            expect.objectContaining({
+                name: 'David',
+                email: 'david@test.com',
+                age: 30,
+            })
+        );
     });
-//   test('create: should create a customer', async () => {
-//     const req = { body: { name: 'David', email: 'david@test.com' } };
-//     const res = mockRes();
 
-//     await controller.create(req, res);
 
-//     expect(res.status).toHaveBeenCalledWith(201);
-//     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
-//       name: 'David',
-//       email: 'david@test.com'
-//     }));
-//   });
+  test('getAll: should return all customers', async () => {
+    await Customer.create({ name: 'Alice', email: 'alice@test.com' });
 
-//   test('getAll: should return all customers', async () => {
-//     await Customer.create({ name: 'Alice', email: 'alice@test.com' });
+    const req = {};
+    const res = mockRes();
 
-//     const req = {};
-//     const res = mockRes();
+    await controller.getAll(req, res);
 
-//     await controller.getAll(req, res);
-
-//     expect(res.json).toHaveBeenCalledWith(
-//       expect.arrayContaining([
-//         expect.objectContaining({ name: 'Alice', email: 'alice@test.com' })
-//       ])
-//     );
-//   });
+    expect(res.json).toHaveBeenCalledWith(
+      expect.arrayContaining([
+        expect.objectContaining({ name: 'Alice', email: 'alice@test.com' })
+      ])
+    );
+  });
 });
 
 
