@@ -28,4 +28,5 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: npx serverless deploy --stage prod
 
-
+      - name: Run Jest tests
+        run: npm run test
