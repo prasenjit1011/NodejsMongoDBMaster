@@ -55,7 +55,6 @@ functions:
       - httpApi:
           path: /items
           method: post
-          cors: true
 
 plugins:
   - serverless-offline
