@@ -2,8 +2,8 @@ jest.setTimeout(60000); // ⏱️ Increase timeout to 20s
 
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const Customer = require('./customer.model');
-const controller = require('./customer.controller');
+const Customer = require('../modules/customers/customer.model');
+const controller = require('../modules/customers/customer.controller');
 
 let mongoServer;
 

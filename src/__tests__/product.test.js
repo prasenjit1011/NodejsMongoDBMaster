@@ -1,4 +1,4 @@
-const controller = require('./productController');
+const controller = require('../modules/products/productController');
 
 const createMockResponse = () => {
   const res = {};
