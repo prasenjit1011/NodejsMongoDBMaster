@@ -24,7 +24,7 @@ exports.createItem = asyncHandler(async (req, res) => {
     name,
     price,
     images,
-    vendorId: req.vendor?.id,      // comes from your auth middleware
+    vendorId: mongoose.Types.ObjectId(req.vendor?.id),
   });
 
   res.status(201).json(item);
