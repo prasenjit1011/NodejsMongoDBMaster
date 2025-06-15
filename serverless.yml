@@ -11,6 +11,15 @@ provider:
     disableDefaultEndpoint: false  # Keep the default endpoint active
     cors: true  # Optional if needed
 
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+          Resource:
+            - arn:aws:s3:::mylambda-bucket-images/*
+
 functions:
   app:
     handler: src/handler.handler
@@ -59,3 +68,10 @@ custom:
   serverless-offline:
     noPrependStageInUrl: true
     httpPort: 8030
+
+resources:
+  Resources:
+    UploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: mylambda-bucket-images
