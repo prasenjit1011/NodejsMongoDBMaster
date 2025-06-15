@@ -1,10 +1,6 @@
-const express = require('express');
-const auth = require('../middleware/auth');
-const items = require('../modules/items/items');
-
-const router = express.Router();
-
-const ctrl = require('../modules/customers/customer.controller');
+const express   = require('express');
+const router    = express.Router();
+const ctrl      = require('../modules/customers/customer.controller');
 
 router.get('/', ctrl.getAll);
 router.get('/:id', ctrl.getById);
