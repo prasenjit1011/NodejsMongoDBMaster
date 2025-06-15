@@ -1,5 +1,5 @@
 const asyncHandler  = require('express-async-handler');
-const Item          = require('../../models/item.model');
+const Item          = require('./item.model');
 const { uploadBuffer } = require('../../utils/s3Uploader');
 
 // POST /items
