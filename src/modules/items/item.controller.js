@@ -1,4 +1,5 @@
 const asyncHandler  = require('express-async-handler');
+const mongoose = require('mongoose');
 const Item          = require('./item.model');
 const { uploadBuffer } = require('../../utils/s3Uploader');
 
