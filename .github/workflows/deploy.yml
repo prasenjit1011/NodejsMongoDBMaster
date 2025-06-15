@@ -3,7 +3,7 @@ name: Deploy to AWS Lambda using Serverless
 on:
   push:
     branches:
-      - lambda_cicd_jest
+      - lambda_jest_s3bucket
 
 jobs:
   deploy:
