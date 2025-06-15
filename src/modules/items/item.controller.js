@@ -42,6 +42,7 @@ async function createItem(req, res) {
       vendorId: req.vendor?.id || null,
     };
 
+    items.push(newItem);
     res.status(201).json(newItem);
   } catch (err) {
     console.error('S3 Upload Error:', err);
