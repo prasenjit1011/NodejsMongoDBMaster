@@ -11,6 +11,7 @@ exports.createItem = asyncHandler(async (req, res) => {
   }
 
   // 1. Upload images concurrently
+  //const images = req.files?.map(file => file.path) || [];
   const images =
     req.files?.length
       ? await Promise.all(
