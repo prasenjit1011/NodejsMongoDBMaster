@@ -6,9 +6,6 @@ provider:
   region: us-east-1
   stage: prod
 
-  environment:
-    BUCKET_NAME: mylambda-bucket-images
-
   httpApi:
     name: node-lambda-app-api
     disableDefaultEndpoint: false  # Keep the default endpoint active
