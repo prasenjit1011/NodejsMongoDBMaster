@@ -16,6 +16,7 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.1",
+    "multer": "^2.0.1",
     "serverless-http": "^3.0.1",
     "supertest": "^7.1.1"
   },
