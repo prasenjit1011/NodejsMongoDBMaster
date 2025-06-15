@@ -1,26 +1,17 @@
-// middleware/upload.js
 const multer = require('multer');
-const path = require('path');
+const path   = require('path');
 
-// ✅ Use memory storage (needed for S3 upload)
+const allowed = /jpeg|jpg|png/i;
+
 const storage = multer.memoryStorage();
 
-// File filter for JPEG, JPG, PNG
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png/;
-  const ext = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-  const mime = allowedTypes.test(file.mimetype);
-  if (ext && mime) {
-    cb(null, true);
-  } else {
-    cb(new Error('Only images of type jpeg, jpg, png are allowed'));
-  }
+  const ok = allowed.test(path.extname(file.originalname)) && allowed.test(file.mimetype);
+  cb(ok ? null : new Error('Only jpeg, jpg, png allowed'), ok);
 };
 
-const upload = multer({
+module.exports = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // Max 5MB per file
+  limits: { fileSize: 20 * 1024 * 1024 },   // 5 MB/file
 });
-
-module.exports = upload;
