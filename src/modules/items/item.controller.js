@@ -11,6 +11,16 @@ exports.createItem = asyncHandler(async (req, res) => {
     throw new Error('Name & price are required');
   }
 
+  let vendorId;
+  if (req.vendor?.id) {
+    if (mongoose.Types.ObjectId.isValid(req.vendor.id)) {
+      vendorId = new mongoose.Types.ObjectId(req.vendor.id);
+    } else {
+      return res.status(400).json({ message: 'Invalid vendor ID format' });
+    }
+  }
+
+
   // 1. Upload images concurrently
   //const images = req.files?.map(file => file.path) || [];
   const images =
@@ -20,12 +30,14 @@ exports.createItem = asyncHandler(async (req, res) => {
         )
       : [];
 
+
+
   // 2. Persist item to MongoDB
   const item = await Item.create({
     name,
     price,
     images,
-    vendorId: mongoose.Types.ObjectId(req.vendor?.id),
+    vendorId
   });
 
   res.status(201).json(item);
