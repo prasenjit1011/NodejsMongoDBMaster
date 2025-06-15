@@ -1,6 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
+const authRoutes = require('./auth');
+const itemRoutes = require('./item');
+const userRoutes = require('./users');
+const productRoutes = require('./products');
+
+router.use('/auth', authRoutes);
+router.use('/items', itemRoutes);
+router.use('/users', userRoutes);
+router.use('/products', productRoutes);
+
 router.get('/', (req, res) => {
     res.send('Welcome to Lambda Home Page! 0822...');
 });
@@ -14,13 +24,6 @@ router.get('/about', (req, res) => {
 });
 
 
-const controller = require('../modules/products/productController');
-
-router.get('/products', controller.getAll);
-router.get('/products/:id', controller.getById);
-router.post('/products/', controller.create);
-router.put('/products/:id', controller.update);
-router.delete('/products/:id', controller.remove);
 
 
 const ctrl = require('../modules/customers/customer.controller');

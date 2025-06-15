@@ -16,12 +16,6 @@ app.use((req, res, next) => {
 
 
 
-const userCtrl = require('./modules/users/user.controller');
-app.post('/users', userCtrl.create);
-app.get('/users/:id', userCtrl.get);
-app.put('/users/:id', userCtrl.update);
-app.delete('/users/:id', userCtrl.remove);
-app.get('/users', userCtrl.list);
 
 
 app.use('/', routes);

@@ -41,6 +41,15 @@ functions:
           method: get
       - httpApi:
           path: /customers
+          method: post      
+      - httpApi:
+          path: /auth/login
+          method: post
+      - httpApi:
+          path: /items
+          method: get
+      - httpApi:
+          path: /items
           method: post
 
 plugins:
@@ -49,3 +58,4 @@ plugins:
 custom:
   serverless-offline:
     noPrependStageInUrl: true
+    httpPort: 8030
