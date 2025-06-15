@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 });
   
 router.get('/dummy', (req, res) => {
-    res.send('Dummy page from Lambda.... S3 1630');
+    res.send('Dummy page from Lambda.... S3 1754');
 });
 
 router.get('/about', (req, res) => {
