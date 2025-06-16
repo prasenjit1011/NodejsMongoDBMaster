@@ -23,7 +23,12 @@ provider:
 functions:
   app:
     handler: src/handler.handler
+    memorySize: 1024
+    timeout: 30
     events:
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
       - httpApi:
           path: /
           method: get
