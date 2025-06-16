@@ -12,6 +12,7 @@ Country
                         
                         
 
+rm -rf node_modules package-lock.json && npm cache clean --force && npm install --package-lock-only && git add . && git commit -m "Package Update" && git push
 
 
 # Important command
