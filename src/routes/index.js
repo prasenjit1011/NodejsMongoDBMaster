@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.send('Welcome to Lambda Home Page! 759...');
+    res.send('Welcome to Lambda Home Page! 937...');
 });
   
 router.get('/dummy', (req, res) => {
