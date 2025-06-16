@@ -53,7 +53,44 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addManager: {
+      type: ManagerType,
+      args: {
+        name: { type: GraphQLString },
+        email: { type: GraphQLString },
+        parentId: { type: GraphQLID }, // optional parent manager
+      },
+      resolve(_, args) {
+        const newManager = {
+          id: String(managers.length + 1),
+          name: args.name,
+          email: args.email,
+          subManagerIds: [],
+        };
+
+        managers.push(newManager);
+
+        // If parentId is provided, attach as sub-manager
+        if (args.parentId) {
+          const parent = managers.find((m) => m.id === args.parentId);
+          if (parent) {
+            parent.subManagerIds.push(newManager.id);
+          }
+        }
+
+        return newManager;
+      }
+    }
+  }
+});
+
+
+
 // Export Schema
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutation,
 });
