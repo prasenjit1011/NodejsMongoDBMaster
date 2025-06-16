@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: mynodejs
+    ports:
+      - "3000:3000"  # map port 3000 on your host to port 3000 in the container
+    volumes:
+      - .:/app  # Mount current directory to /app in the container
+    environment:
+      - NODE_ENV=development
+    networks:
+      - node-network
+
+networks:
+  node-network:
+    driver: bridge
