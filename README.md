@@ -11,3 +11,21 @@ nodemon app.js <br />
 # Ejs Template Engine 
 
 <%= %> <br />
+
+# query {
+#   manager{
+#     id
+#     name
+#     email
+#   }
+# }
+
+
+
+# mutation {
+#   addManager(name: "Sanjay Manager", email: "bob@example.com") {
+#     id
+#     name
+#     email
+#   }
+# }
