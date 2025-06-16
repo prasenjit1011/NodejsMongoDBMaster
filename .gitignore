@@ -18,3 +18,4 @@ yarn-error.log
 /my-snapshot.heapsnapshot
 /public/tradebook/*
 /heapdump
+/coverage
