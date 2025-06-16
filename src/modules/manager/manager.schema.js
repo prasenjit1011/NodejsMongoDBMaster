@@ -1,41 +1,76 @@
-const { GraphQLObjectType, GraphQLSchema, GraphQLString, GraphQLList, GraphQLID } = require('graphql');
+const {
+  GraphQLObjectType,
+  GraphQLSchema,
+  GraphQLString,
+  GraphQLList,
+  GraphQLID,
+  GraphQLNonNull
+} = require('graphql');
+
 const Manager = require('./manager.model');
 
 const ManagerType = new GraphQLObjectType({
   name: 'Manager',
   fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    email: { type: GraphQLString },
+    id:     { type: GraphQLID },
+    name:   { type: GraphQLString },
+    email:  { type: GraphQLString },
     images: { type: new GraphQLList(GraphQLString) }
-  }),
+  })
 });
 
 const RootQuery = new GraphQLObjectType({
-  name: 'RootQueryType',
-  fields: {
+  name: 'Query',
+  fields: () => ({
     managers: {
       type: new GraphQLList(ManagerType),
-      resolve: () => Manager.find(),
+      description: 'Get all managers',
+      resolve: async () => {
+        try {
+          return await Manager.find();
+        } catch (err) {
+          throw new Error('Failed to fetch managers');
+        }
+      }
     },
-  },
+    manager: {
+      type: ManagerType,
+      description: 'Get a single manager by ID',
+      args: { id: { type: GraphQLID } },
+      resolve: async (_, { id }) => {
+        try {
+          return await Manager.findById(id);
+        } catch (err) {
+          throw new Error('Manager not found');
+        }
+      }
+    }
+  })
 });
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
-  fields: {
+  fields: () => ({
     addManager: {
       type: ManagerType,
+      description: 'Add a new manager',
       args: {
-        name: { type: GraphQLString },
-        email: { type: GraphQLString },
+        name:  { type: new GraphQLNonNull(GraphQLString) },
+        email: { type: new GraphQLNonNull(GraphQLString) }
       },
-      resolve(parent, args) {
-        const manager = new Manager(args);
-        return manager.save();
+      resolve: async (_, args) => {
+        try {
+          const manager = new Manager(args);
+          return await manager.save();
+        } catch (err) {
+          throw new Error('Error adding manager');
+        }
       }
     }
-  }
+  })
 });
 
-module.exports = new GraphQLSchema({ query: RootQuery, mutation: Mutation });
+module.exports = new GraphQLSchema({
+  query: RootQuery,
+  mutation: Mutation
+});
