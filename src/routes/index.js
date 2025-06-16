@@ -16,15 +16,15 @@ router.use('/customers', customerRoutes);
 router.use('/manager', managerRoutes);
 
 router.get('/', (req, res) => {
-    res.send('Welcome to Lambda Home Page! S3 1204...');
+    res.send('Welcome to Lambda Home Page! S3 1220...');
 });
   
 router.get('/dummy', (req, res) => {
-    res.send('Dummy page from Lambda.... S3 1204');
+    res.send('Dummy : NodeJS ExpressJS Lambda S3 Bucket Jest Auth MongoDB... 1220');
 });
 
 router.get('/about', (req, res) => {
-    res.send('My About New page from Lambda ... S3 1204');
+    res.send('My About New page from Lambda ... S3 1220');
 });
 
 module.exports = router;
