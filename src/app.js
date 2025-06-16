@@ -1,41 +1,42 @@
 require('dotenv').config();
+const express = require('express');
+const mongoose = require('./mongo');
+const { ApolloServer } = require('apollo-server-express');
+const schema = require('./modules/manager/manager.schema');
+const routes = require('./routes');
+const managerRoutes = require('./modules/manager/manager.controller');
 
-const express        = require('express');
-const mongoose       = require('./mongo');
-const { graphqlHTTP } = require('express-graphql');
-const schema         = require('./modules/manager/manager.schema');
-const routes         = require('./routes');
-const managerRoutes  = require('./modules/manager/manager.controller');
+async function startServer() {
+  const app = express();
+  app.use(express.json());
 
-const app = express();
+  app.use((req, res, next) => {
+    console.log(`[${req.method}] ${req.originalUrl}`);
+    next();
+  });
 
-// Global middlewares
-app.use(express.json());
+  const server = new ApolloServer({
+    schema,
+    introspection: process.env.NODE_ENV !== 'production',
+    csrfPrevention: true
+  });
 
-// Basic request logger
-app.use((req, res, next) => {
-  console.info(`[${req.method}] ${req.originalUrl}`);
-  next();
-});
+  await server.start();
+  server.applyMiddleware({ app, path: '/graphql' });
 
-// Mount routes
-app.use('/graphql', graphqlHTTP({
-  schema,
-  graphiql: process.env.NODE_ENV !== 'production' // disable GraphiQL in prod
-}));
+  app.use('/manager', managerRoutes);
+  app.use('/', routes);
 
-app.use('/manager', managerRoutes);
-app.use('/', routes);
+  app.use((req, res) => {
+    res.status(404).json({ message: 'Route not found' });
+  });
 
-// Optional: 404 handler
-app.use((req, res, next) => {
-  res.status(404).json({ message: 'Route not found' });
-});
+  app.use((err, req, res, next) => {
+    console.error('Unhandled Error:', err.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  });
 
-// Optional: Error handler
-app.use((err, req, res, next) => {
-  console.error('Unhandled Error:', err.message);
-  res.status(500).json({ message: 'Internal server error' });
-});
+  return app;
+}
 
-module.exports = app;
+module.exports = startServer;
