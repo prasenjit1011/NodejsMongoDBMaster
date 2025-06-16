@@ -1,5 +1,19 @@
 # NodeJS ExpressJS 
 
+Country
+    State
+        City
+        Capital
+        Company
+            Manager
+            Sub-Manager
+                Employee
+                    Project
+                        
+                        
+
+
+
 # Important command
 
 npm init <br />

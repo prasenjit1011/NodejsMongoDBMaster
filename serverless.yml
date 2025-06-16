@@ -1,4 +1,4 @@
-service: node-lambda-app
+service: lambda05
 
 provider:
   name: aws
@@ -10,6 +10,15 @@ provider:
     name: node-lambda-app-api
     disableDefaultEndpoint: false  # Keep the default endpoint active
     cors: true  # Optional if needed
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+          Resource:
+            - arn:aws:s3:::mylambda-bucket-images/*
 
 functions:
   app:
@@ -24,6 +33,33 @@ functions:
       - httpApi:
           path: /dummy
           method: get
+      - httpApi:
+          path: /users
+          method: get
+      - httpApi:
+          path: /users
+          method: post
+      - httpApi:
+          path: /products
+          method: get
+      - httpApi:
+          path: /products
+          method: post
+      - httpApi:
+          path: /customers
+          method: get
+      - httpApi:
+          path: /customers
+          method: post      
+      - httpApi:
+          path: /auth/login
+          method: post
+      - httpApi:
+          path: /items
+          method: get
+      - httpApi:
+          path: /items
+          method: post
 
 plugins:
   - serverless-offline
@@ -31,3 +67,11 @@ plugins:
 custom:
   serverless-offline:
     noPrependStageInUrl: true
+    httpPort: 8040
+
+resources:
+  Resources:
+    UploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: mylambda-bucket-images
