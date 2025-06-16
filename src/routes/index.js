@@ -16,15 +16,15 @@ router.use('/customers', customerRoutes);
 router.use('/manager', managerRoutes);
 
 router.get('/', (req, res) => {
-    res.send('Welcome to Lambda Home Page! S3 1127...');
+    res.send('Welcome to Lambda Home Page! S3 1204...');
 });
   
 router.get('/dummy', (req, res) => {
-    res.send('Dummy page from Lambda.... S3 1127');
+    res.send('Dummy page from Lambda.... S3 1204');
 });
 
 router.get('/about', (req, res) => {
-    res.send('My About New page from Lambda ... S3 644');
+    res.send('My About New page from Lambda ... S3 1204');
 });
 
 module.exports = router;
