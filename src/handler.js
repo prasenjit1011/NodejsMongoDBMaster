@@ -1,18 +1,36 @@
 // handler.js
-const serverless = require('serverless-http');
-const app = require('./app');
+const serverlessExpress = require('@vendia/serverless-express');
+const startServer = require('./app');
 const { connectToDatabase } = require('./mongo');
 
-let isDbConnected = false;
+let server; // Reuse across invocations
 
-const setup = async () => {
-  if (!isDbConnected) {
+exports.handler = async (event, context) => {
+  if (!server) {
     await connectToDatabase();
-    isDbConnected = true;
+    const app = await startServer();
+    server = serverlessExpress({ app });
   }
+  return server(event, context);
 };
 
-module.exports.handler = async (event, context) => {
-  await setup();
-  return serverless(app)(event, context);
-};
+
+
+// // handler.js
+// const serverless = require('serverless-http');
+// const app = require('./app');
+// const { connectToDatabase } = require('./mongo');
+
+// let isDbConnected = false;
+
+// const setup = async () => {
+//   if (!isDbConnected) {
+//     await connectToDatabase();
+//     isDbConnected = true;
+//   }
+// };
+
+// module.exports.handler = async (event, context) => {
+//   await setup();
+//   return serverless(app)(event, context);
+// };

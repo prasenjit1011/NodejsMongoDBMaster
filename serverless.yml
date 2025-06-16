@@ -29,42 +29,6 @@ functions:
       - httpApi:
           path: /{proxy+}
           method: ANY
-      - httpApi:
-          path: /
-          method: get
-      - httpApi:
-          path: /about
-          method: get
-      - httpApi:
-          path: /dummy
-          method: get
-      - httpApi:
-          path: /users
-          method: get
-      - httpApi:
-          path: /users
-          method: post
-      - httpApi:
-          path: /products
-          method: get
-      - httpApi:
-          path: /products
-          method: post
-      - httpApi:
-          path: /customers
-          method: get
-      - httpApi:
-          path: /customers
-          method: post      
-      - httpApi:
-          path: /auth/login
-          method: post
-      - httpApi:
-          path: /items
-          method: get
-      - httpApi:
-          path: /items
-          method: post
 
 plugins:
   - serverless-offline
