@@ -5,13 +5,15 @@ const authRoutes = require('./auth');
 const itemRoutes = require('./item');
 const userRoutes = require('./users');
 const productRoutes     = require('./products');
-const customerRoutes   = require('./customers');
+const customerRoutes    = require('./customers');
+const managerRoutes     = require('./manager');
 
 router.use('/auth', authRoutes);
 router.use('/items', itemRoutes);
 router.use('/users', userRoutes);
 router.use('/products', productRoutes);
 router.use('/customers', customerRoutes);
+router.use('/manager', managerRoutes);
 
 router.get('/', (req, res) => {
     res.send('Welcome to Lambda Home Page! S3 644...');

@@ -3,7 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const schema = require('./modules/manager/manager.schema');
-const managerRoutes = require('./modules/manager/manager.controller');
 const routes = require('./routes');
 
 async function startServer() {
@@ -27,7 +26,6 @@ async function startServer() {
   server.applyMiddleware({ app, path: '/graphql' });
 
   // REST routes
-  app.use('/manager', managerRoutes);
   app.use('/', routes);
 
   // 404 fallback
