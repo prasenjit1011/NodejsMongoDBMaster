@@ -2,7 +2,7 @@
 const app = require('./app');
 const { connectToDatabase } = require('./mongo');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8040;
 
 (async () => {
   await connectToDatabase();

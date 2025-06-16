@@ -14,15 +14,15 @@ router.use('/products', productRoutes);
 router.use('/customers', customerRoutes);
 
 router.get('/', (req, res) => {
-    res.send('Welcome to Lambda Home Page! S3 1630...');
+    res.send('Welcome to Lambda Home Page! S3 644...');
 });
   
 router.get('/dummy', (req, res) => {
-    res.send('Dummy page from Lambda.... S3 1754');
+    res.send('Dummy page from Lambda.... S3 644');
 });
 
 router.get('/about', (req, res) => {
-    res.send('My About New page from Lambda ... S3 929');
+    res.send('My About New page from Lambda ... S3 644');
 });
 
 
