@@ -1,5 +1,5 @@
 const request = require('supertest');
-const startServer = require('../../app');
+const startServer = require('../app');
 const { connectToDatabase } = require('../../mongo');
 const mongoose = require('mongoose'); // 👈 make sure to close DB
 let app;
