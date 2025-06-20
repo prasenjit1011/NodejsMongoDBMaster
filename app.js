@@ -38,6 +38,15 @@ const checkAuth = (req, res, next) => {
 };
 
 
+
+app.get('/dashboard', checkAuth, (req, res) => {
+  res.render('dashboard', {
+      isAuthenticated: req.isAuthenticated,
+      userInfo: req.session.userInfo
+  });
+});
+
+
 app.get('/', checkAuth, (req, res) => {
   res.render('home', {
       isAuthenticated: req.isAuthenticated,
@@ -58,6 +67,8 @@ app.get('/login', (req, res) => {
       state: state,
       nonce: nonce,
   });
+
+  console.log(authUrl);
 
   res.redirect(authUrl);
 });
@@ -96,12 +107,21 @@ app.get(getPathFromURL('https://d84l1y8p4kdic.cloudfront.net'), async (req, res)
 });
 
 
+// // Logout route
+// app.get('/logout', (req, res) => {
+//   req.session.destroy();
+//   const logoutUrl = `https://<user pool domain>/logout?client_id=3ofju9bq077uisvcv18aj8lrsn&logout_uri=<logout uri>`;
+//   res.redirect(logoutUrl);
+// });
+
+
 // Logout route
 app.get('/logout', (req, res) => {
   req.session.destroy();
-  const logoutUrl = `https://<user pool domain>/logout?client_id=3ofju9bq077uisvcv18aj8lrsn&logout_uri=<logout uri>`;
+  const logoutUrl = `https://us-east-1xxnb8qhq2.auth.us-east-1.amazoncognito.com/logout?client_id=3ofju9bq077uisvcv18aj8lrsn&logout_uri=http://google.com`;
   res.redirect(logoutUrl);
 });
+
 
 // 🔹 Start Server
 app.listen(3000, () => {
