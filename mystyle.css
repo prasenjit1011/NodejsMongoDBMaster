@@ -1,7 +1,3 @@
-/* body{
-    background-color: #272222;
-    color: #FFF;
-} */
 
 .logo-customizable {
   max-width: 60%;
@@ -10,7 +6,7 @@
 
 .banner-customizable {
   padding: 25px 0px 25px 0px;
-  background-color: lightgray;
+  background-color: rgb(224, 66, 66);
 }
 
 .label-customizable {
@@ -32,7 +28,7 @@
 }
 
 .legalText-customizable {
-  color: #747474;
+  color: #3de73d;
   font-size: 11px;
 }
 
@@ -42,13 +38,13 @@
   margin: 20px 0px 10px 0px;
   height: 40px;
   width: 100%;
-  color: #fff;
-  background-color: #337ab7;
+  color: #cc3232;
+  background-color: #4db733;
 }
 
 .submitButton-customizable:hover {
   color: #fff;
-  background-color: #286090;
+  background-color: #499028;
 }
 
 .errorMessage-customizable {
@@ -64,7 +60,7 @@
   width: 100%;
   height: 34px;
   color: #555;
-  background-color: #fff;
+  background-color: #5bb438;
   border: 1px solid #ccc;
 }
 
@@ -80,13 +76,13 @@
   text-align: center;
   margin-bottom: 15px;
   color: #fff;
-  background-color: #5bc0de;
+  background-color: #45a319;
   border-color: #46b8da;
 }
 
 .idpButton-customizable:hover {
   color: #fff;
-  background-color: #31b0d5;
+  background-color: #0f90b8;
 }
 
 .socialButton-customizable {
@@ -111,6 +107,5 @@
 }
 
 .background-customizable {
-  background-color: #272222;
-  color: #FFF;
+  background-color: #ffffff;
 }

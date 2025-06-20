@@ -1,0 +1,12 @@
+input[type="text"], input[type="password"] {
+  border: 1px solid #cbd5e0 !important;
+  padding: 10px !important;
+  border-radius: 6px !important;
+}
+
+button {
+  background-color: #1a73e8 !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+  padding: 10px 16px !important;
+}

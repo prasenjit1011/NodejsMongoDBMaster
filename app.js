@@ -94,9 +94,7 @@ app.get('/dashboard', (req, res) => {
 
 // Logout
 app.get('/logout', (req, res) => {
-  //const logoutUrl = `https://<your-cognito-domain>.auth.<region>.amazoncognito.com/logout?client_id=<your-client-id>&logout_uri=http://localhost:3000/`;
-  const logoutUrl = `https://us-east-1xxnb8qhq2.auth.us-east-1.amazoncognito.com/logout?client_id=3ofju9bq077uisvcv18aj8lrsn&logout_uri=http://localhost:3000/logout`;
-
+  const logoutUrl = `https://us-east-1xxnb8qhq2.auth.us-east-1.amazoncognito.com/logout?client_id=3ofju9bq077uisvcv18aj8lrsn&logout_uri=http://localhost:3000`; 
   req.session.destroy(() => res.redirect(logoutUrl));
 });
 
