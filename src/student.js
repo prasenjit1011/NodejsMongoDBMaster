@@ -1,12 +1,7 @@
-// handler.js
-const express     = require('express');
-const serverless  = require('serverless-http');
-const { Client }  = require('@elastic/elasticsearch');
-
+const express = require('express');
+const { Client } = require('@elastic/elasticsearch');
 const app = express();
 app.use(express.json());
-
-
 
 // Elasticsearch client
 //const client = new Client({ node: 'http://localhost:9200' });
@@ -22,19 +17,14 @@ const client = new Client({
 const INDEX = 'students';
 
 // Create student
-app.get('/students/add', async (req, res) => {
+app.post('/students', async (req, res) => {
   try {
-    const dtd = new Date();
-    const str = dtd.getDate()+'/'+dtd.getMonth()+'/'+dtd.getFullYear()+' '+dtd.getHours()+':'+dtd.getMinutes()+':'+dtd.getSeconds();
-    //const data = req.body;
-    const data = {title:"Sonia = 01A "+str, details:"Loren ipsum dummy data. Loren ipsum dummy data. Loren ipsum dummy data. Loren ipsum dummy data. Loren ipsum dummy data. Loren ipsum dummy data. Loren ipsum dummy data."};
     const result = await client.index({
       index: INDEX,
-      document: data
+      document: req.body
     });
     res.json({ message: 'Student created', id: result._id });
   } catch (err) {
-
     res.status(500).json({ error: err.message });
   }
 });
@@ -42,7 +32,6 @@ app.get('/students/add', async (req, res) => {
 // Get all students
 app.get('/students', async (req, res) => {
   try {
-    await client.indices.create({ index: 'students' }, { ignore: [400] });
     const result = await client.search({
       index: INDEX,
       query: { match_all: {} }
@@ -97,8 +86,7 @@ app.delete('/students/:id', async (req, res) => {
   }
 });
 
-
-
-module.exports.handler = async (event, context) => {
-  return serverless(app)(event, context);
-};
+// Start server
+app.listen(3000, () => {
+  console.log('Server running on http://localhost:3000');
+});
