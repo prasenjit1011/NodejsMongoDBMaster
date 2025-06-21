@@ -3,7 +3,7 @@ name: Deploy to AWS Lambda using Serverless
 on:
   push:
     branches:
-      - lambda_jest_dynamo_01
+      - lambda_jest_elasticsearch
 
 jobs:
   deploy:
