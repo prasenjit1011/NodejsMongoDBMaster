@@ -1,113 +1,15 @@
 // handler.js
-const serverless = require('serverless-http');
-const express = require('express');
-const { v4: uuidv4 } = require('uuid');
-const dynamodb = require('./dynamodbClient');
+const serverless      = require('serverless-http');
+const express         = require('express');
 
-const app = express();
+const app   = express();
 app.use(express.json());
 
-const TABLE_NAME = 'Products';
+const prodcrud = require('./routes/productcrud');
+app.use('/products', prodcrud);
 
-// Home route
 app.get('/', (req, res) => {
   res.json({ a: 'hello 02' });
-});
-
-// List all products
-app.get('/productlist', async (req, res) => {
-  try {
-    const data = await dynamodb.scan({ TableName: TABLE_NAME }).promise();
-    res.json(data.Items);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch products' });
-  }
-});
-
-// Create new product
-app.get('/productsadd', async (req, res) => {
-  //const { name, price, description } = req.body;
-  // const name = "Test 002";
-  // const price = 885;
-  // const description = "dummy 00044452";
-  const { name, price, description } = {name:"Test 002", price:1005, description:"dummy 00044452"};
-  const newProduct = {
-    id: uuidv4(),
-    name,
-    price,
-    description
-  };
-
-  try {
-    await dynamodb.put({
-      TableName: TABLE_NAME,
-      Item: newProduct
-    }).promise();
-
-    res.status(201).json(newProduct);
-  } catch (err) {
-    res.status(201).json({err:"error"});
-    res.status(500).json({ error: 'Failed to create product' });
-  }
-});
-
-// Get product by ID
-app.get('/products/:id', async (req, res) => {
-  try {
-    const data = await dynamodb.get({
-      TableName: TABLE_NAME,
-      Key: { id: req.params.id }
-    }).promise();
-
-    if (!data.Item) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
-
-    res.json(data.Item);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch product' });
-  }
-});
-
-// Update product by ID
-app.put('/products/:id', async (req, res) => {
-  const { name, price, description } = req.body;
-
-  const params = {
-    TableName: TABLE_NAME,
-    Key: { id: req.params.id },
-    UpdateExpression: 'set #name = :n, price = :p, description = :d',
-    ExpressionAttributeNames: {
-      '#name': 'name'
-    },
-    ExpressionAttributeValues: {
-      ':n': name,
-      ':p': price,
-      ':d': description
-    },
-    ReturnValues: 'ALL_NEW'
-  };
-
-  try {
-    const data = await dynamodb.update(params).promise();
-    res.json(data.Attributes);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to update product' });
-  }
-});
-
-// Delete product by ID
-app.delete('/products/:id', async (req, res) => {
-  try {
-    await dynamodb.delete({
-      TableName: TABLE_NAME,
-      Key: { id: req.params.id }
-    }).promise();
-
-    res.json({ deleted: true });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to delete product' });
-  }
 });
 
 module.exports.handler = async (event, context) => {

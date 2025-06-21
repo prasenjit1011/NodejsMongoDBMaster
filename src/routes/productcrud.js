@@ -1,22 +1,25 @@
-const express = require('express');
-const dynamodb = require('./dynamodbClient');
+const express         = require('express');
+const { v4: uuidv4 }  = require('uuid');
 
-const router = express.Router();
+const router          = express.Router();
+const dynamodb        = require('../dynamodb');
+const TABLE_NAME      = 'Products';
 
 // List all products
-router.get('/productlist', async (req, res) => {
+router.get('/list', async (req, res) => {
   try {
     const data = await dynamodb.scan({ TableName: TABLE_NAME }).promise();
     res.json(data.Items);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch products' });
+    console.log('Err : ',err);
+    res.status(500).json({ err, error: 'Failed to fetch products' });
   }
 });
 
 // Create new product
-router.get('/productsadd', async (req, res) => {
+router.get('/add', async (req, res) => {
   //const { name, price, description } = req.body;
-  const { name, price, description } = {name:"Test 003", price:9995, description:"dummy 007752"};
+  const { name, price, description } = {name:"Test 003", price:885544, description:"dummy 007752"};
   const newProduct = {
     id: uuidv4(),
     name,
@@ -38,7 +41,7 @@ router.get('/productsadd', async (req, res) => {
 });
 
 // Get product by ID
-router.get('/products/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const data = await dynamodb.get({
       TableName: TABLE_NAME,
@@ -56,7 +59,7 @@ router.get('/products/:id', async (req, res) => {
 });
 
 // Update product by ID
-router.put('/products/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   const { name, price, description } = req.body;
 
   const params = {
@@ -83,7 +86,7 @@ router.put('/products/:id', async (req, res) => {
 });
 
 // Delete product by ID
-router.delete('/products/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     await dynamodb.delete({
       TableName: TABLE_NAME,
