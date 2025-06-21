@@ -1,8 +1,9 @@
 const express         = require('express');
+const AWS             = require('aws-sdk');
 const { v4: uuidv4 }  = require('uuid');
 
 const router          = express.Router();
-const dynamodb        = require('../dynamodb');
+const dynamodb        = new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' });
 const TABLE_NAME      = 'Products';
 
 // List all products
