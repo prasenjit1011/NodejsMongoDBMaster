@@ -23,46 +23,12 @@ provider:
 functions:
   app:
     handler: src/handler.handler
+    memorySize: 1024
+    timeout: 30
     events:
       - httpApi:
-          path: /
-          method: get
-      - httpApi:
-          path: /productlist
-          method: get
-      - httpApi:
-          path: /about
-          method: get
-      - httpApi:
-          path: /dummy
-          method: get
-      - httpApi:
-          path: /users
-          method: get
-      - httpApi:
-          path: /users
-          method: post
-      - httpApi:
-          path: /products
-          method: get
-      - httpApi:
-          path: /products
-          method: post
-      - httpApi:
-          path: /customers
-          method: get
-      - httpApi:
-          path: /customers
-          method: post      
-      - httpApi:
-          path: /auth/login
-          method: post
-      - httpApi:
-          path: /items
-          method: get
-      - httpApi:
-          path: /items
-          method: post
+          path: /{proxy+}
+          method: ANY
 
 plugins:
   - serverless-offline

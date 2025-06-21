@@ -5,7 +5,7 @@
   "main": "src/handler.js",
   "type": "commonjs",
   "scripts": {
-    "dynamo":"node src/dynamoHandler.js",
+    "dynamo": "node src/dynamoHandler.js",
     "start": "node src/handler.js",
     "dev": "npx kill-port 8040 && nodemon --watch src --ext js,json,yml --exec \"npx serverless offline\"",
     "deploy": "npx serverless deploy",

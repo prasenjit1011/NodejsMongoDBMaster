@@ -10,7 +10,7 @@ app.get('/', (req, res)=>{
 })
 
 app.get('/productlist', (req, res)=>{
-  res.json({a:'hello productlist 002 '});
+  res.json({a:'hello productlist 0033 '});
 })
 
 
