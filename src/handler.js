@@ -1,18 +1,19 @@
 // handler.js
 const serverless = require('serverless-http');
-const app = require('./app');
-const { connectToDatabase } = require('./mongo');
+const express = require('express');
+const path    = require('path');
+const app     = express();
 
-let isDbConnected = false;
+app.use(express.json());
+app.get('/', (req, res)=>{
+  res.json({a:'hello 02'});
+})
 
-const setup = async () => {
-  if (!isDbConnected) {
-    await connectToDatabase();
-    isDbConnected = true;
-  }
-};
+app.get('/productlist', (req, res)=>{
+  res.json({a:'hello productlist 002 '});
+})
+
 
 module.exports.handler = async (event, context) => {
-  await setup();
   return serverless(app)(event, context);
 };

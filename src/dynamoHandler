@@ -1,0 +1,41 @@
+const service = require('./dynamoService');
+
+exports.handler = async (event) => {
+  const { httpMethod, path, body, pathParameters } = event;
+
+  try {
+    // if (httpMethod === 'POST' && path === '/products') {
+    //   const data = JSON.parse(body);
+    //   const item = await service.createProduct(data);
+    //   return response(201, item);
+    // }
+
+    // if (httpMethod === 'GET' && pathParameters?.id) {
+    //   const item = await service.getProduct(pathParameters.id);
+    //   return response(200, item);
+    // }
+
+    // if (httpMethod === 'PUT' && pathParameters?.id) {
+    //   const data = JSON.parse(body);
+    //   const updated = await service.updateProduct(pathParameters.id, data);
+    //   return response(200, updated);
+    // }
+
+    // if (httpMethod === 'DELETE' && pathParameters?.id) {
+    //   const result = await service.deleteProduct(pathParameters.id);
+    //   return response(200, result);
+    // }
+
+    return response(404, { error: 'Route not found' });
+  } catch (err) {
+    return response(500, { error: err.message });
+  }
+};
+
+function response(statusCode, body) {
+  return {
+    statusCode,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  };
+}
