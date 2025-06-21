@@ -1,21 +1,10 @@
-// handler.js
-const serverless = require('serverless-http');
 const express = require('express');
-const { v4: uuidv4 } = require('uuid');
 const dynamodb = require('./dynamodbClient');
 
-const app = express();
-app.use(express.json());
-
-const TABLE_NAME = 'Products';
-
-// Home route
-app.get('/', (req, res) => {
-  res.json({ a: 'hello 02' });
-});
+const router = express.Router();
 
 // List all products
-app.get('/productlist', async (req, res) => {
+router.get('/productlist', async (req, res) => {
   try {
     const data = await dynamodb.scan({ TableName: TABLE_NAME }).promise();
     res.json(data.Items);
@@ -25,12 +14,9 @@ app.get('/productlist', async (req, res) => {
 });
 
 // Create new product
-app.get('/productsadd', async (req, res) => {
+router.get('/productsadd', async (req, res) => {
   //const { name, price, description } = req.body;
-  // const name = "Test 002";
-  // const price = 885;
-  // const description = "dummy 00044452";
-  const { name, price, description } = {name:"Test 002", price:1005, description:"dummy 00044452"};
+  const { name, price, description } = {name:"Test 003", price:9995, description:"dummy 007752"};
   const newProduct = {
     id: uuidv4(),
     name,
@@ -52,7 +38,7 @@ app.get('/productsadd', async (req, res) => {
 });
 
 // Get product by ID
-app.get('/products/:id', async (req, res) => {
+router.get('/products/:id', async (req, res) => {
   try {
     const data = await dynamodb.get({
       TableName: TABLE_NAME,
@@ -70,7 +56,7 @@ app.get('/products/:id', async (req, res) => {
 });
 
 // Update product by ID
-app.put('/products/:id', async (req, res) => {
+router.put('/products/:id', async (req, res) => {
   const { name, price, description } = req.body;
 
   const params = {
@@ -97,7 +83,7 @@ app.put('/products/:id', async (req, res) => {
 });
 
 // Delete product by ID
-app.delete('/products/:id', async (req, res) => {
+router.delete('/products/:id', async (req, res) => {
   try {
     await dynamodb.delete({
       TableName: TABLE_NAME,
@@ -110,6 +96,4 @@ app.delete('/products/:id', async (req, res) => {
   }
 });
 
-module.exports.handler = async (event, context) => {
-  return serverless(app)(event, context);
-};
+module.exports = router;
